@@ -12,26 +12,7 @@ import requests
 from io import BytesIO
 
 #loading the model
-#path = r"C:\Users\Administrator\Documents\AIsat\Group_Project\trained_model.sav"
-
-
-
-
-# GitHub raw content URL for the model file
-github_model_url = 'https://raw.githubusercontent.com/Exwhybaba/Customer_Churn/main/trained_model.sav'
-
-# Download the model file from GitHub
-response = requests.get(github_model_url)
-
-if response.status_code == 200:
-    # Read the content into a BytesIO object
-    model_content = BytesIO(response.content)
-
-    # Load the model from BytesIO
-    loaded_model = pickle.load(model_content)
-else:
-    raise FileNotFoundError(f"Failed to download model file. Status code: {response.status_code}")
-
+path = r"C:\Users\Administrator\Documents\AIsat\Group_Project\trained_model.sav"
 
 #loaded_model = pickle.load(open(path, mode= 'rb'))
 
