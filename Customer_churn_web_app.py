@@ -8,6 +8,7 @@ Created on Mon Nov 13 21:49:29 2023
 import numpy as np
 import pickle
 import streamlit as st
+import urllib.request
 
 #loading the model
 # Download the model file
