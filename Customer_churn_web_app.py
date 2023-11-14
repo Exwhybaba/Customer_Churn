@@ -10,7 +10,8 @@ import pickle
 import streamlit as st
 
 #loading the model
-path = r"C:\Users\Administrator\Documents\AIsat\Group_Project\trained_model.sav"
+#path = r"C:\Users\Administrator\Documents\AIsat\Group_Project\trained_model.sav"
+path = "https://github.com/Exwhybaba/Customer_Churn/blob/main/trained_model.sav"
 
 loaded_model = pickle.load(open(path, mode= 'rb'))
 
