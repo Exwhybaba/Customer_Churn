@@ -10,9 +10,16 @@ import pickle
 import streamlit as st
 
 #loading the model
-path = "https://github.com/Exwhybaba/Customer_Churn/blob/main/trained_model.sav"
+# Download the model file
+model_url = "https://github.com/Exwhybaba/Customer_Churn/raw/main/trained_model.sav"
+local_model_path = "trained_model.sav"
+urllib.request.urlretrieve(model_url, local_model_path)
 
-loaded_model = pickle.load(open(path, mode= 'rb'))
+# Load the model
+try:
+    loaded_model = pickle.load(open(local_model_path, mode='rb'))
+except FileNotFoundError:
+    st.error("Model file not found. Please check the file path.")
 
 #prediction function
 def churn_prediction(Customer_Age, Total_Relationship_Count, Months_Inactive_12_mon,
