@@ -1,2 +1,1 @@
-streamlit==latest_version
 cloudpickle>=1.6.0,<1.8.0
