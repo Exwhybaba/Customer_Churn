@@ -57,7 +57,7 @@ def main(debug=True):
     )
 
     # Header image with centered alignment
-    st.image(r"C:\Users\Administrator\Documents\AIsat\Group_Project\Customer-Churn.png",
+    st.image("https://github.com/Exwhybaba/Customer_Churn/blob/main/Customer-Churn.png",
              caption="Predict Customer Churn",
              use_column_width=True,
              )
