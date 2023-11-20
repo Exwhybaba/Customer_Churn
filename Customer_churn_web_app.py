@@ -79,11 +79,45 @@ def main(debug=True):
 
     # Second column
     with col2:
-        Total_Revolving_Bal = st.number_input('Total Revolving Balance', min_value=0.0)
-        Total_Trans_Amt = st.number_input('Total Transaction Amount', min_value=0.0)
-        Total_Trans_Ct = st.number_input('Total Transaction Count', min_value=0.0)
-        Total_Relationship_Count = st.number_input('Total Relationship Count', min_value=0)
-        Months_Inactive_12_mon = st.number_input('Months Inactive 12 months', min_value=0)
+        # Getting user input for Total_Revolving_Bal
+        Total_Revolving_Bal_min = 0
+        Total_Revolving_Bal_max = 2517
+        Total_Revolving_Bal = st.number_input('Total Revolving Balance',
+                                              min_value=Total_Revolving_Bal_min,
+                                              max_value=Total_Revolving_Bal_max,
+                                              value=Total_Revolving_Bal_min)  # You can set a default value if needed
+
+        # Getting user input for Total_Trans_Amt
+        Total_Trans_Amt_min = 510
+        Total_Trans_Amt_max = 8618
+        Total_Trans_Amt = st.number_input('Total Transaction Amount',
+                                          min_value=Total_Trans_Amt_min,
+                                          max_value=Total_Trans_Amt_max,
+                                          value=Total_Trans_Amt_min)  # You can set a default value if needed
+
+        # Getting user input for Total_Trans_Ct
+        Total_Trans_Ct_min = 10
+        Total_Trans_Ct_max = 113
+        Total_Trans_Ct = st.number_input('Total Transaction Count',
+                                         min_value=Total_Trans_Ct_min,
+                                         max_value=Total_Trans_Ct_max,
+                                         value=Total_Trans_Ct_min)  # You can set a default value if needed
+
+        # Getting user input for Total_Relationship_Count
+        Total_Relationship_Count_min = 1
+        Total_Relationship_Count_max = 6
+        Total_Relationship_Count = st.number_input('Total Relationship Count',
+                                                   min_value=Total_Relationship_Count_min,
+                                                   max_value=Total_Relationship_Count_max,
+                                                   value=Total_Relationship_Count_min)  # You can set a default value if needed
+
+        # Getting user input for Months_Inactive_12_mon
+        Months_Inactive_12_mon_min = 1
+        Months_Inactive_12_mon_max = 6
+        Months_Inactive_12_mon = st.number_input('Months Inactive 12 months',
+                                                 min_value=Months_Inactive_12_mon_min,
+                                                 max_value=Months_Inactive_12_mon_max,
+                                                 value=Months_Inactive_12_mon_min)  # You can set a default value if needed
 
     # Button for prediction
     if st.button('Predict Customer Churn', key='prediction_button'):
@@ -91,7 +125,7 @@ def main(debug=True):
                                      Total_Relationship_Count, Months_Inactive_12_mon)
 
         # Display prediction result with custom styling
-        if attrition[0] == 1:
+        if attrition[0] == '1':
             st.error('❗ The customer is on the verge of churning.')
         else:
             st.success('🎉 The customer is not on the verge of churning.')
