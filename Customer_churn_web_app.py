@@ -5,19 +5,9 @@ import streamlit as st
 import requests
 import io
 
-## Loading the model
-url = "https://raw.githubusercontent.com/Exwhybaba/Customer_Churn/main/trained6_model.sav"
-response = requests.get(url)
-
-if response.status_code == 200:
-    loaded_model = pickle.loads(response.content)
-else:
-    st.error("Failed to retrieve the model file. Status code: {}".format(response.status_code))
-    st.stop()
-
 def churn_prediction(Gender, Total_Revolving_Bal, Total_Trans_Amt, Total_Trans_Ct, Total_Relationship_Count,
                      Months_Inactive_12_mon):
-   # Convert 'Gender' to numerical values
+    # Convert 'Gender' to numerical values
     gender_mapping = {'F': 0, 'M': 1}
 
     # If Gender is a list or NumPy array, convert each element to numerical value
@@ -27,15 +17,23 @@ def churn_prediction(Gender, Total_Revolving_Bal, Total_Trans_Amt, Total_Trans_C
         # If Gender is a single value, convert it to numerical value
         Gender = gender_mapping[Gender]
 
+    # Check if all arrays have the same length
+    arrays = [Gender, Total_Revolving_Bal, Total_Trans_Amt, Total_Trans_Ct,
+              Total_Relationship_Count, Months_Inactive_12_mon]
+    array_lengths = [len(arr) for arr in arrays]
+
+    if len(set(array_lengths)) != 1:
+        raise ValueError("All arrays must be of the same length")
 
     data = {
         'Gender': Gender,
-        'Total_Revolving_Bal': [Total_Revolving_Bal],
-        'Total_Trans_Amt': [Total_Trans_Amt],
-        'Total_Trans_Ct': [Total_Trans_Ct],
-        'Total_Relationship_Count': [Total_Relationship_Count],
-        'Months_Inactive_12_mon': [Months_Inactive_12_mon],
+        'Total_Revolving_Bal': Total_Revolving_Bal,
+        'Total_Trans_Amt': Total_Trans_Amt,
+        'Total_Trans_Ct': Total_Trans_Ct,
+        'Total_Relationship_Count': Total_Relationship_Count,
+        'Months_Inactive_12_mon': Months_Inactive_12_mon,
     }
+
     # convert the data to pandas
     df = pd.DataFrame(data)
 
