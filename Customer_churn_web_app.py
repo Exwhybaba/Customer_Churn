@@ -151,13 +151,6 @@ def main():
     result_placeholder = st.empty()
     result_placeholder.text("Waiting for predictions...")
 
-    # Additional visualizations with plotly express
-    st.markdown('## Additional Visualizations')
-    st.subheader('Churn Prediction Distribution')
-    fig = px.pie(result_df, names='Predicted Churn', title='Churn Prediction Distribution')
-    st.plotly_chart(fig)
-
-    # ... (remaining code remains unchanged)
 
 if __name__ == '__main__':
     main()
