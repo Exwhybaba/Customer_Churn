@@ -162,7 +162,7 @@ def main():
         df_uploaded = pd.read_csv(uploaded_file)
 
         # Make predictions for the uploaded data
-        predictions_df = pd.DataFrame({'Predicted Churn': churn_prediction_for_df(df_uploaded)})
+        predictions_df = pd.DataFrame({'Predicted Churn': churn_prediction(df_uploaded)})
 
         # Combine the original data with predicted results
         result_df = pd.concat([df_uploaded, predictions_df], axis=1)
