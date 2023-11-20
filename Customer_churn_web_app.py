@@ -6,6 +6,9 @@ import requests
 import io
 import plotly.express as px
 
+# Set page configuration with wide layout
+st.set_page_config(layout="wide")
+
 # Loading the model
 url = "https://raw.githubusercontent.com/Exwhybaba/Customer_Churn/main/trained6_model.sav"
 response = requests.get(url)
