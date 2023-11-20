@@ -15,29 +15,22 @@ else:
     st.error("Failed to retrieve the model file. Status code: {}".format(response.status_code))
     st.stop()
 
-# Modified prediction function
-def churn_prediction(*args, **kwargs):
-    if len(args) > 0:  # If individual arguments are provided
-        data = {
-            'Gender': [args[0]],
-            'Total_Revolving_Bal': [args[1]],
-            'Total_Trans_Amt': [args[2]],
-            'Total_Trans_Ct': [args[3]],
-            'Total_Relationship_Count': [args[4]],
-            'Months_Inactive_12_mon': [args[5]],
-        }
-    else:  # If DataFrame is provided
-        data = kwargs
-
-    if 'Gender' not in data:
-        return 'Gender is required for prediction.'
-
+def churn_prediction(Gender, Total_Revolving_Bal, Total_Trans_Amt, Total_Trans_Ct, Total_Relationship_Count,
+                     Months_Inactive_12_mon):
     # Convert 'Gender' to numerical value
     gender_mapping = {'Female': 0, 'Male': 1}
-    data['Gender'] = data['Gender'].map(gender_mapping)
+    Gender = gender_mapping[Gender]
 
-    # Convert the data to pandas DataFrame with a dummy index
-    df = pd.DataFrame(data).set_index('Gender')
+    data = {
+        'Gender': [Gender],
+        'Total_Revolving_Bal': [Total_Revolving_Bal],
+        'Total_Trans_Amt': [Total_Trans_Amt],
+        'Total_Trans_Ct': [Total_Trans_Ct],
+        'Total_Relationship_Count': [Total_Relationship_Count],
+        'Months_Inactive_12_mon': [Months_Inactive_12_mon],
+    }
+    # convert the data to pandas
+    df = pd.DataFrame(data)
 
     # convert data numpy array
     df2array = np.asarray(df)
