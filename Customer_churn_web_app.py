@@ -35,7 +35,8 @@ st.markdown(
     f"""
     <style>
         body {{
-            background-image: url("https://raw.githubusercontent.com/Exwhybaba/Customer_Churn/main/background_image.jpg");
+       
+            background-image: url("https://raw.githubusercontent.com/Exwhybaba/Customer_Churn/main/abstract-luxury-gradient-blue-background-smooth-dark-blue-with-black-vignette-studio-banner.jpg");
             background-size: cover;
         }}
     </style>
