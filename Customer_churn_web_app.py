@@ -91,7 +91,7 @@ def main(debug=True):
                                      Total_Relationship_Count, Months_Inactive_12_mon)
 
         # Display prediction result with custom styling
-        if prediction[0] == 1:
+        if attrition[0] == 1:
             st.error('❗ The customer is on the verge of churning.')
         else:
             st.success('🎉 The customer is not on the verge of churning.')
