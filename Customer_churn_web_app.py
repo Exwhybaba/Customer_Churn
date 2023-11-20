@@ -36,8 +36,8 @@ def churn_prediction(*args, **kwargs):
     gender_mapping = {'Female': 0, 'Male': 1}
     data['Gender'] = data['Gender'].map(gender_mapping)
 
-    # convert the data to pandas
-    df = pd.DataFrame(data)
+    # Convert the data to pandas DataFrame with a dummy index
+    df = pd.DataFrame(data).set_index('Gender')
 
     # convert data numpy array
     df2array = np.asarray(df)
@@ -50,7 +50,6 @@ def churn_prediction(*args, **kwargs):
         return 'The customer is on the verge of churning.'
     else:
         return 'The customer is not on the verge of churning'
-
 
 # Main function
 def main():
