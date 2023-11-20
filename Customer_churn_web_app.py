@@ -4,6 +4,7 @@ import pickle
 import streamlit as st
 import requests
 import io
+import plotly.express as px
 
 # Loading the model
 url = "https://raw.githubusercontent.com/Exwhybaba/Customer_Churn/main/trained6_model.sav"
@@ -15,9 +16,8 @@ else:
     st.error("Failed to retrieve the model file. Status code: {}".format(response.status_code))
     st.stop()
 
-# prediction function
+# Prediction function for DataFrame
 def churn_prediction_for_df(df):
-    # Convert 'Gender' to numerical value
     gender_mapping = {'Female': 0, 'Male': 1}
     df['Gender'] = df['Gender'].map(gender_mapping)
 
@@ -25,14 +25,20 @@ def churn_prediction_for_df(df):
 
     return predictions
 
-def main(debug=True):
+# Main function
+def main():
     # Setting page layout with wide mode
     st.set_page_config(layout="wide")
 
-    # giving a title with custom CSS
+    # Background image and animated header
+    st.markdown(
+        '<style>body{background-image: url("background_image_url");}</style>',
+        unsafe_allow_html=True
+    )
     st.title('🚀 Customer Churn Prediction Web App')
     st.markdown(
-        '<style>h1{color: #1F4D7A; text-align: center;}</style>', unsafe_allow_html=True
+        '<p style="font-size: 24px; animation: pulse 1s infinite;">Predict Customer Churn</p>',
+        unsafe_allow_html=True
     )
 
     # Header image with centered alignment
@@ -59,56 +65,54 @@ def main(debug=True):
 
     # Second column
     with col2:
-        # Getting user input for Total_Revolving_Bal
         Total_Revolving_Bal_min = 0
         Total_Revolving_Bal_max = 2517
         Total_Revolving_Bal = st.number_input('Total Revolving Balance',
                                               min_value=Total_Revolving_Bal_min,
                                               max_value=Total_Revolving_Bal_max,
-                                              value=Total_Revolving_Bal_min)  # You can set a default value if needed
+                                              value=Total_Revolving_Bal_min)
 
-        # Getting user input for Total_Trans_Amt
         Total_Trans_Amt_min = 510
         Total_Trans_Amt_max = 8618
         Total_Trans_Amt = st.number_input('Total Transaction Amount',
                                           min_value=Total_Trans_Amt_min,
                                           max_value=Total_Trans_Amt_max,
-                                          value=Total_Trans_Amt_min)  # You can set a default value if needed
+                                          value=Total_Trans_Amt_min)
 
-        # Getting user input for Total_Trans_Ct
         Total_Trans_Ct_min = 10
         Total_Trans_Ct_max = 113
         Total_Trans_Ct = st.number_input('Total Transaction Count',
                                          min_value=Total_Trans_Ct_min,
                                          max_value=Total_Trans_Ct_max,
-                                         value=Total_Trans_Ct_min)  # You can set a default value if needed
+                                         value=Total_Trans_Ct_min)
 
-        # Getting user input for Total_Relationship_Count
         Total_Relationship_Count_min = 1
         Total_Relationship_Count_max = 6
         Total_Relationship_Count = st.number_input('Total Relationship Count',
                                                    min_value=Total_Relationship_Count_min,
                                                    max_value=Total_Relationship_Count_max,
-                                                   value=Total_Relationship_Count_min)  # You can set a default value if needed
+                                                   value=Total_Relationship_Count_min)
 
-        # Getting user input for Months_Inactive_12_mon
         Months_Inactive_12_mon_min = 1
         Months_Inactive_12_mon_max = 6
         Months_Inactive_12_mon = st.number_input('Months Inactive 12 months',
                                                  min_value=Months_Inactive_12_mon_min,
                                                  max_value=Months_Inactive_12_mon_max,
-                                                 value=Months_Inactive_12_mon_min)  # You can set a default value if needed
+                                                 value=Months_Inactive_12_mon_min)
 
-    # Button for prediction
-    if st.button('Predict Customer Churn', key='prediction_button'):
-        attrition = churn_prediction(Gender, Total_Revolving_Bal, Total_Trans_Amt, Total_Trans_Ct,
-                                     Total_Relationship_Count, Months_Inactive_12_mon)
+    # Animated button for prediction
+    if st.button('Predict Customer Churn', key='prediction_button', help="Click to predict customer churn"):
+        with st.spinner('Predicting...'):
+            # Prediction logic
+            attrition = churn_prediction(Gender, Total_Revolving_Bal, Total_Trans_Amt, Total_Trans_Ct,
+                                         Total_Relationship_Count, Months_Inactive_12_mon)
 
         # Display prediction result with custom styling
+        result_placeholder = st.empty()
         if attrition[0] == '1':
-            st.error('❗ The customer is on the verge of churning.')
+            result_placeholder.error('❗ The customer is on the verge of churning.')
         else:
-            st.success('🎉 The customer is not on the verge of churning.')
+            result_placeholder.success('🎉 The customer is not on the verge of churning.')
 
     # Option to upload a file
     uploaded_file = st.file_uploader("Upload a CSV file with customer data", type=["csv"])
@@ -134,5 +138,10 @@ def main(debug=True):
             key='download_button'
         )
 
+    # Real-time updates with placeholder
+    result_placeholder = st.empty()
+    result_placeholder.text("Waiting for predictions...")
+
+    
 if __name__ == '__main__':
     main()
