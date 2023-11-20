@@ -96,7 +96,7 @@ def main():
 
     # First column
     with col1:
-        Gender = st.radio('Select gender:', options=['Female', 'Male'])
+        Gender = st.radio('Select gender:', options=['F', 'M'])
 
     # Second column
     with col2:
