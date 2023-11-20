@@ -123,29 +123,29 @@ def main():
             result_placeholder.success('🎉 The customer is not on the verge of churning. 🌟')
 
     # Option to upload a file with a file icon
-    uploaded_file = st.file_uploader("Upload a CSV file with customer data", type=["csv"])
-    if uploaded_file is not None:
-        # Read the uploaded file
-        df_uploaded = pd.read_csv(uploaded_file)
+uploaded_file = st.file_uploader("Upload a CSV file with customer data", type=["csv"])
+if uploaded_file is not None:
+    # Read the uploaded file
+    df_uploaded = pd.read_csv(uploaded_file)
 
-        # Make predictions for the uploaded data
-        predictions_df = pd.DataFrame({'Predicted Churn': churn_prediction_for_df(df_uploaded)})
+    # Make predictions for the uploaded data
+    predictions_df = pd.DataFrame({'Predicted Churn': churn_prediction_for_df(df_uploaded)})
 
-        # Combine the original data with predicted results
-        result_df = pd.concat([df_uploaded, predictions_df], axis=1)
+    # Combine the original data with predicted results
+    result_df = pd.concat([df_uploaded, predictions_df], axis=1)
 
-        # Display the table with predicted results
-        st.dataframe(result_df)
+    # Display the table with predicted results
+    st.dataframe(result_df)
 
-        # Download the CSV file with a download icon
-        csv_data = result_df.to_csv(index=False)
-        st.download_button(
-            label="Download Predicted Results",
-            data=io.StringIO(csv_data).read(),
-            file_name="predicted_results.csv",
-            key='download_button',
-            help="Click to download the predicted results"
-        )
+    # Download the CSV file with a download icon
+    csv_data = result_df.to_csv(index=False)
+    st.download_button(
+        label="Download Predicted Results",
+        data=io.StringIO(csv_data).read(),
+        file_name="predicted_results.csv",
+        key='download_button',
+        help="Click to download the predicted results"
+    )
 
     # Real-time updates with placeholder and loading spinner
     result_placeholder = st.empty()
@@ -156,6 +156,10 @@ def main():
     st.subheader('Churn Prediction Distribution')
     fig = px.pie(result_df, names='Predicted Churn', title='Churn Prediction Distribution')
     st.plotly_chart(fig)
+else:
+    # Display a message if no file is uploaded
+    st.info("Please upload a CSV file to see predictions and visualizations.")
+
 
 
 if __name__ == '__main__':
