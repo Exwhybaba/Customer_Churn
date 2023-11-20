@@ -18,7 +18,7 @@ else:
 def churn_prediction(Gender, Total_Revolving_Bal, Total_Trans_Amt, Total_Trans_Ct, Total_Relationship_Count,
                      Months_Inactive_12_mon):
     # Convert 'Gender' to numerical value
-    gender_mapping = {'Female': 0, 'Male': 1}
+    gender_mapping = {'F': 0, 'M': 1}
     Gender = gender_mapping[Gender]
 
     data = {
