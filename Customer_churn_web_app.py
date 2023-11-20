@@ -5,7 +5,7 @@ import streamlit as st
 import requests
 
 # Loading the model
-url = "https://raw.githubusercontent.com/Exwhybaba/Customer_Churn/main/trained2_model.sav"
+url = "https://raw.githubusercontent.com/Exwhybaba/Customer_Churn/main/trained6_model.sav"
 response = requests.get(url)
 
 if response.status_code == 200:
