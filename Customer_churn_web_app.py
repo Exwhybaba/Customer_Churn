@@ -32,7 +32,14 @@ def main():
 
     # Background image and animated header
     st.markdown(
-        '<style>body{background-image: url("background_image_url"); background-size: cover;}</style>',
+        f"""
+        <style>
+            body {{
+                background-image: url("https://images.app.goo.gl/ZsitbEswM7n65nLr9");
+                background-size: cover;
+            }}
+        </style>
+        """,
         unsafe_allow_html=True
     )
     st.title('🚀 Customer Churn Prediction Web App')
