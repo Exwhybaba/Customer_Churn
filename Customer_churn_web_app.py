@@ -17,19 +17,12 @@ else:
 
 def churn_prediction(Gender, Total_Revolving_Bal, Total_Trans_Amt, Total_Trans_Ct, Total_Relationship_Count,
                      Months_Inactive_12_mon):
-   # Convert 'Gender' to numerical values
+    # Convert 'Gender' to numerical value
     gender_mapping = {'F': 0, 'M': 1}
-
-    # If Gender is a list or NumPy array, convert each element to numerical value
-    if isinstance(Gender, (list, np.ndarray)):
-        Gender = [gender_mapping[gen] for gen in Gender]
-    else:
-        # If Gender is a single value, convert it to numerical value
-        Gender = gender_mapping[Gender]
-
+    Gender = gender_mapping[Gender]
 
     data = {
-        'Gender': Gender,
+        'Gender': [Gender],
         'Total_Revolving_Bal': [Total_Revolving_Bal],
         'Total_Trans_Amt': [Total_Trans_Amt],
         'Total_Trans_Ct': [Total_Trans_Ct],
