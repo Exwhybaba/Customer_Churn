@@ -35,7 +35,9 @@ def churn_prediction(Total_Revolving_Bal, Total_Trans_Amt, Total_Trans_Ct, NB_Cl
 
 def main(debug=True):
     st.title('Customer Churn Prediction Web App')
-    st.image("https://raw.githubusercontent.com/Exwhybaba/Customer_Churn/main/Customer-Churn.png", width = 700)
+    import streamlit as st
+    st.image("https://raw.githubusercontent.com/Exwhybaba/Customer_Churn/main/Customer-Churn.png", use_container_width=True)
+
 
     Total_Revolving_Bal = st.number_input('Kindly input the total revolving balance')
     Total_Trans_Amt = st.number_input('Kindly input total transaction amount')
