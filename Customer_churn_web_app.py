@@ -29,8 +29,15 @@ def churn_prediction(*args, **kwargs):
     else:  # If DataFrame is provided
         data = kwargs
 
+    if 'Gender' not in data:
+        return 'Gender is required for prediction.'
+
+    # Convert 'Gender' to numerical value
+    gender_mapping = {'Female': 0, 'Male': 1}
+    data['Gender'] = data['Gender'].map(gender_mapping)
+
     # convert the data to pandas
-    df = pd.DataFrame(data)
+    df = pd.DataFrame(data, index=[0])  # Add an index to the DataFrame
 
     # convert data numpy array
     df2array = np.asarray(df)
