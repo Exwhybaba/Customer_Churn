@@ -155,8 +155,7 @@ def main():
         # Read the uploaded file
         df_uploaded = pd.read_csv(uploaded_file)
 
-        # Make predictions for the uploaded data
-        #predictions_df = pd.DataFrame({'Predicted Churn': churn_prediction(df=df_uploaded)})
+    
         # Make predictions for the uploaded data
         predictions_df = pd.DataFrame({
         'Predicted Churn': churn_prediction(
