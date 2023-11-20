@@ -153,7 +153,7 @@ def main():
     uploaded_file = st.file_uploader("Upload a CSV file with customer data", type=["csv"])
     if uploaded_file is not None:
         # Read the uploaded file
-        df_uploaded = pd.read_csv(uploaded_file)
+        uploaded_df = pd.read_csv(uploaded_file)
 
     
         # Make predictions for the uploaded data
