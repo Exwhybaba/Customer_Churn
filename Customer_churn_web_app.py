@@ -4,7 +4,6 @@ import pickle
 import streamlit as st
 import requests
 import io
-import plotly.express as px
 
 # Loading the model
 url = "https://raw.githubusercontent.com/Exwhybaba/Customer_Churn/main/trained6_model.sav"
@@ -16,22 +15,20 @@ else:
     st.error("Failed to retrieve the model file. Status code: {}".format(response.status_code))
     st.stop()
 
-# Prediction function for DataFrame
-# prediction function
-def churn_prediction(Gender, Total_Revolving_Bal, Total_Trans_Amt, Total_Trans_Ct, Total_Relationship_Count,
-                     Months_Inactive_12_mon):
-    # Convert 'Gender' to numerical value
-    gender_mapping = {'Female': 0, 'Male': 1}
-    Gender = gender_mapping[Gender]
+# Modified prediction function
+def churn_prediction(*args, **kwargs):
+    if len(args) > 0:  # If individual arguments are provided
+        data = {
+            'Gender': [args[0]],
+            'Total_Revolving_Bal': [args[1]],
+            'Total_Trans_Amt': [args[2]],
+            'Total_Trans_Ct': [args[3]],
+            'Total_Relationship_Count': [args[4]],
+            'Months_Inactive_12_mon': [args[5]],
+        }
+    else:  # If DataFrame is provided
+        data = kwargs
 
-    data = {
-        'Gender': [Gender],
-        'Total_Revolving_Bal': [Total_Revolving_Bal],
-        'Total_Trans_Amt': [Total_Trans_Amt],
-        'Total_Trans_Ct': [Total_Trans_Ct],
-        'Total_Relationship_Count': [Total_Relationship_Count],
-        'Months_Inactive_12_mon': [Months_Inactive_12_mon],
-    }
     # convert the data to pandas
     df = pd.DataFrame(data)
 
@@ -47,13 +44,11 @@ def churn_prediction(Gender, Total_Revolving_Bal, Total_Trans_Amt, Total_Trans_C
     else:
         return 'The customer is not on the verge of churning'
 
-
 # Main function
 def main():
     # Setting page layout with wide mode
     st.set_page_config(layout="wide")
 
-    
     # Background image and animated header
     st.markdown(
         f"""
@@ -66,7 +61,6 @@ def main():
         """,
         unsafe_allow_html=True
     )
-
 
     st.title('🚀 Customer Churn Prediction Web App')
     st.markdown(
@@ -162,7 +156,7 @@ def main():
         df_uploaded = pd.read_csv(uploaded_file)
 
         # Make predictions for the uploaded data
-        predictions_df = pd.DataFrame({'Predicted Churn': churn_prediction(df_uploaded)})
+        predictions_df = pd.DataFrame({'Predicted Churn': churn_prediction(df=df_uploaded)})
 
         # Combine the original data with predicted results
         result_df = pd.concat([df_uploaded, predictions_df], axis=1)
