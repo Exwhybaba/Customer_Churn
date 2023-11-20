@@ -14,7 +14,7 @@ else:
     st.error("Failed to retrieve the model file. Status code: {}".format(response.status_code))
     st.stop()
 
-# Prediction function
+
 # prediction function
 def churn_prediction(Gender, Total_Revolving_Bal, Total_Trans_Amt, Total_Trans_Ct, Total_Relationship_Count,
                      Months_Inactive_12_mon):
@@ -58,6 +58,7 @@ def main(debug=True):
 
     # Header image with centered alignment
     st.image(r"C:\Users\Administrator\Documents\AIsat\Group_Project\Customer-Churn.png",
+             caption="Predict Customer Churn"
              use_column_width=True,
              )
 
