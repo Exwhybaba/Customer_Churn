@@ -5,7 +5,7 @@ import streamlit as st
 import requests
 import io
 
-# Loading the model
+## Loading the model
 url = "https://raw.githubusercontent.com/Exwhybaba/Customer_Churn/main/trained6_model.sav"
 response = requests.get(url)
 
