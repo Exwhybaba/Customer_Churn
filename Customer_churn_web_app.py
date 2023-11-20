@@ -17,7 +17,15 @@ else:
     st.stop()
 
 # Prediction function for DataFrame
-def churn_prediction(df):
+data = {
+    'Gender': [Gender],
+    'Total_Revolving_Bal': [Total_Revolving_Bal],
+    'Total_Trans_Amt': [Total_Trans_Amt],
+    'Total_Trans_Ct': [Total_Trans_Ct],
+    'Total_Relationship_Count': [Total_Relationship_Count],
+    'Months_Inactive_12_mon': [Months_Inactive_12_mon],
+}
+    df = pd.DataFrame(data)
     gender_mapping = {'Female': 0, 'Male': 1}
     df['Gender'] = df['Gender'].map(gender_mapping)
 
