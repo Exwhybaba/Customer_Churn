@@ -158,15 +158,15 @@ def main():
     
         # Make predictions for the uploaded data
         predictions_df = pd.DataFrame({
-        'Predicted Churn': churn_prediction(
-            Gender=df_uploaded['Gender'],
-            Total_Revolving_Bal=df_uploaded['Total_Revolving_Bal'],
-            Total_Trans_Amt=df_uploaded['Total_Trans_Amt'],
-            Total_Trans_Ct=df_uploaded['Total_Trans_Ct'],
-            Total_Relationship_Count=df_uploaded['Total_Relationship_Count'],
-            Months_Inactive_12_mon=df_uploaded['Months_Inactive_12_mon']
-        )
-        })
+         'Predicted Churn': churn_prediction(
+        Gender=df_uploaded['Gender'].values,  # Extract values from the 'Gender' column
+        Total_Revolving_Bal=df_uploaded['Total_Revolving_Bal'],
+        Total_Trans_Amt=df_uploaded['Total_Trans_Amt'],
+        Total_Trans_Ct=df_uploaded['Total_Trans_Ct'],
+        Total_Relationship_Count=df_uploaded['Total_Relationship_Count'],
+        Months_Inactive_12_mon=df_uploaded['Months_Inactive_12_mon']
+    )
+})
 
 
         # Combine the original data with predicted results
