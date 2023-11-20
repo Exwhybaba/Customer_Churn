@@ -17,21 +17,36 @@ else:
     st.stop()
 
 # Prediction function for DataFrame
-data = {
-    'Gender': [Gender],
-    'Total_Revolving_Bal': [Total_Revolving_Bal],
-    'Total_Trans_Amt': [Total_Trans_Amt],
-    'Total_Trans_Ct': [Total_Trans_Ct],
-    'Total_Relationship_Count': [Total_Relationship_Count],
-    'Months_Inactive_12_mon': [Months_Inactive_12_mon],
-}
-    df = pd.DataFrame(data)
+# prediction function
+def churn_prediction(Gender, Total_Revolving_Bal, Total_Trans_Amt, Total_Trans_Ct, Total_Relationship_Count,
+                     Months_Inactive_12_mon):
+    # Convert 'Gender' to numerical value
     gender_mapping = {'Female': 0, 'Male': 1}
-    df['Gender'] = df['Gender'].map(gender_mapping)
+    Gender = gender_mapping[Gender]
 
-    predictions = loaded_model.predict(df)
+    data = {
+        'Gender': [Gender],
+        'Total_Revolving_Bal': [Total_Revolving_Bal],
+        'Total_Trans_Amt': [Total_Trans_Amt],
+        'Total_Trans_Ct': [Total_Trans_Ct],
+        'Total_Relationship_Count': [Total_Relationship_Count],
+        'Months_Inactive_12_mon': [Months_Inactive_12_mon],
+    }
+    # convert the data to pandas
+    df = pd.DataFrame(data)
 
-    return predictions
+    # convert data numpy array
+    df2array = np.asarray(df)
+    # reshape the array
+    reshape_array = df2array.reshape(1, -1)
+
+    prediction = loaded_model.predict(reshape_array)
+
+    if prediction[0] == 1:
+        return 'The customer is on the verge of churning.'
+    else:
+        return 'The customer is not on the verge of churning'
+
 
 # Main function
 def main():
