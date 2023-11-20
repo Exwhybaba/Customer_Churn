@@ -157,26 +157,13 @@ def main():
 
     
         # Make predictions for the uploaded data
-        predictions_df = pd.DataFrame({
-         'Predicted Churn': churn_prediction(
-        Gender= np.asarray(df_uploaded['Gender']),  
-        Total_Revolving_Bal=np.asarray(df_uploaded['Total_Revolving_Bal']),
-        Total_Trans_Amt= np.asarray(df_uploaded['Total_Trans_Amt']),
-        Total_Trans_Ct= np.asarray(df_uploaded['Total_Trans_Ct']),
-        Total_Relationship_Count=np.asarray(df_uploaded['Total_Relationship_Count']),
-        Months_Inactive_12_mon= np.asarray(df_uploaded['Months_Inactive_12_mon'])
-    )
-})
-
-
-        # Combine the original data with predicted results
-        result_df = pd.concat([df_uploaded, predictions_df], axis=1)
-
-        # Display the table with predicted results
-        st.dataframe(result_df)
+        uploaded_df['Gender'] =  uploaded_df['Gender'].map(lambda x: 0 if x == 'F' else 1)
+        uploaded_df2np = np.asarray(uploaded_df)
+        predicted_value = loaded_model.predict(uploaded_df2np)
+        uploaded_df['predicted_churn'] = predicted_value.reshape(-1,1)
 
         # Download the CSV file with a download icon
-        csv_data = result_df.to_csv(index=False)
+        csv_data = uploaded_df.to_csv(index=False)
         st.download_button(
             label="Download Predicted Results",
             data=io.StringIO(csv_data).read(),
