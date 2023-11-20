@@ -31,17 +31,18 @@ def main():
     st.set_page_config(layout="wide")
 
     # Background image and animated header
-    st.markdown(
-        f"""
-        <style>
-            body {{
-                background-image: url("https://images.app.goo.gl/ZsitbEswM7n65nLr9");
-                background-size: cover;
-            }}
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
+st.markdown(
+    f"""
+    <style>
+        body {{
+            background-image: url("https://raw.githubusercontent.com/Exwhybaba/Customer_Churn/main/background_image.jpg");
+            background-size: cover;
+        }}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
     st.title('🚀 Customer Churn Prediction Web App')
     st.markdown(
         '<p style="font-size: 24px; color: #1F4D7A; animation: pulse 1s infinite;">Predict Customer Churn</p>',
