@@ -32,12 +32,12 @@ def main():
 
     # Background image and animated header
     st.markdown(
-        '<style>body{background-image: url("background_image_url");}</style>',
+        '<style>body{background-image: url("https://images.app.goo.gl/NL7vEcWSQ4pP3KdU9"); background-size: cover;}</style>',
         unsafe_allow_html=True
     )
     st.title('🚀 Customer Churn Prediction Web App')
     st.markdown(
-        '<p style="font-size: 24px; animation: pulse 1s infinite;">Predict Customer Churn</p>',
+        '<p style="font-size: 24px; color: #1F4D7A; animation: pulse 1s infinite;">Predict Customer Churn</p>',
         unsafe_allow_html=True
     )
 
@@ -47,7 +47,11 @@ def main():
              use_column_width=True,
              )
 
-    # Sidebar layout
+    # Sidebar layout with rounded corners
+    st.sidebar.markdown(
+        '<style>div.Widget.row-widget.stRadio div[role="radiogroup"] > label {border-radius: 10px;}</style>',
+        unsafe_allow_html=True
+    )
     st.sidebar.subheader("Legend")
     st.sidebar.markdown('- **Gender**: Select "Female" or "Male" using the radio buttons.')
     st.sidebar.markdown('- **Total Revolving Balance**: Enter the total revolving balance.')
@@ -56,7 +60,11 @@ def main():
     st.sidebar.markdown('- **Total Relationship Count**: Enter the total relationship count.')
     st.sidebar.markdown('- **Months Inactive 12 months**: Enter the number of months inactive in the last 12 months.')
 
-    # Main content layout
+    # Main content layout with rounded corners
+    st.markdown(
+        '<style>div.Widget.stButton button{border-radius: 10px;}</style>',
+        unsafe_allow_html=True
+    )
     col1, col2 = st.columns(2)
 
     # First column
@@ -100,21 +108,21 @@ def main():
                                                  max_value=Months_Inactive_12_mon_max,
                                                  value=Months_Inactive_12_mon_min)
 
-    # Animated button for prediction
+    # Animated button for prediction with a success icon
     if st.button('Predict Customer Churn', key='prediction_button', help="Click to predict customer churn"):
         with st.spinner('Predicting...'):
             # Prediction logic
             attrition = churn_prediction(Gender, Total_Revolving_Bal, Total_Trans_Amt, Total_Trans_Ct,
                                          Total_Relationship_Count, Months_Inactive_12_mon)
 
-        # Display prediction result with custom styling
+        # Display prediction result with custom styling and icons
         result_placeholder = st.empty()
         if attrition[0] == '1':
-            result_placeholder.error('❗ The customer is on the verge of churning.')
+            result_placeholder.error('❗ The customer is on the verge of churning. 🚨')
         else:
-            result_placeholder.success('🎉 The customer is not on the verge of churning.')
+            result_placeholder.success('🎉 The customer is not on the verge of churning. 🌟')
 
-    # Option to upload a file
+    # Option to upload a file with a file icon
     uploaded_file = st.file_uploader("Upload a CSV file with customer data", type=["csv"])
     if uploaded_file is not None:
         # Read the uploaded file
@@ -129,19 +137,26 @@ def main():
         # Display the table with predicted results
         st.dataframe(result_df)
 
-        # Download the CSV file
+        # Download the CSV file with a download icon
         csv_data = result_df.to_csv(index=False)
         st.download_button(
             label="Download Predicted Results",
             data=io.StringIO(csv_data).read(),
             file_name="predicted_results.csv",
-            key='download_button'
+            key='download_button',
+            help="Click to download the predicted results"
         )
 
-    # Real-time updates with placeholder
+    # Real-time updates with placeholder and loading spinner
     result_placeholder = st.empty()
     result_placeholder.text("Waiting for predictions...")
 
-    
+    # Additional visualizations with plotly express
+    st.markdown('## Additional Visualizations')
+    st.subheader('Churn Prediction Distribution')
+    fig = px.pie(result_df, names='Predicted Churn', title='Churn Prediction Distribution')
+    st.plotly_chart(fig)
+
+
 if __name__ == '__main__':
     main()
