@@ -15,20 +15,28 @@ else:
     st.error("Failed to retrieve the model file. Status code: {}".format(response.status_code))
     st.stop()
 
+# Modify churn_prediction function
 def churn_prediction(Gender, Total_Revolving_Bal, Total_Trans_Amt, Total_Trans_Ct, Total_Relationship_Count,
                      Months_Inactive_12_mon):
-    # Convert 'Gender' to numerical value
+    # Convert 'Gender' to numerical values
     gender_mapping = {'F': 0, 'M': 1}
-    Gender = gender_mapping[Gender]
+
+    # If Gender is a list, convert each element to numerical value
+    if isinstance(Gender, list):
+        Gender = [gender_mapping[gen] for gen in Gender]
+    else:
+        # If Gender is a single value, convert it to numerical value
+        Gender = gender_mapping[Gender]
 
     data = {
-        'Gender': [Gender],
-        'Total_Revolving_Bal': [Total_Revolving_Bal],
-        'Total_Trans_Amt': [Total_Trans_Amt],
-        'Total_Trans_Ct': [Total_Trans_Ct],
-        'Total_Relationship_Count': [Total_Relationship_Count],
-        'Months_Inactive_12_mon': [Months_Inactive_12_mon],
+        'Gender': Gender,
+        'Total_Revolving_Bal': Total_Revolving_Bal,
+        'Total_Trans_Amt': Total_Trans_Amt,
+        'Total_Trans_Ct': Total_Trans_Ct,
+        'Total_Relationship_Count': Total_Relationship_Count,
+        'Months_Inactive_12_mon': Months_Inactive_12_mon,
     }
+
     # convert the data to pandas
     df = pd.DataFrame(data)
 
