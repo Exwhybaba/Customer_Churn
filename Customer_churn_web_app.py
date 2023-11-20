@@ -15,28 +15,20 @@ else:
     st.error("Failed to retrieve the model file. Status code: {}".format(response.status_code))
     st.stop()
 
-# Modify churn_prediction function
 def churn_prediction(Gender, Total_Revolving_Bal, Total_Trans_Amt, Total_Trans_Ct, Total_Relationship_Count,
                      Months_Inactive_12_mon):
-    # Convert 'Gender' to numerical values
+    # Convert 'Gender' to numerical value
     gender_mapping = {'F': 0, 'M': 1}
-
-    # If Gender is a list, convert each element to numerical value
-    if isinstance(Gender, list):
-        Gender = [gender_mapping[gen] for gen in Gender]
-    else:
-        # If Gender is a single value, convert it to numerical value
-        Gender = gender_mapping[Gender]
+    Gender = gender_mapping[Gender]
 
     data = {
-        'Gender': Gender,
-        'Total_Revolving_Bal': Total_Revolving_Bal,
-        'Total_Trans_Amt': Total_Trans_Amt,
-        'Total_Trans_Ct': Total_Trans_Ct,
-        'Total_Relationship_Count': Total_Relationship_Count,
-        'Months_Inactive_12_mon': Months_Inactive_12_mon,
+        'Gender': [Gender],
+        'Total_Revolving_Bal': [Total_Revolving_Bal],
+        'Total_Trans_Amt': [Total_Trans_Amt],
+        'Total_Trans_Ct': [Total_Trans_Ct],
+        'Total_Relationship_Count': [Total_Relationship_Count],
+        'Months_Inactive_12_mon': [Months_Inactive_12_mon],
     }
-
     # convert the data to pandas
     df = pd.DataFrame(data)
 
@@ -164,18 +156,17 @@ def main():
         df_uploaded = pd.read_csv(uploaded_file)
 
     
-       # Make predictions for the uploaded data
+        # Make predictions for the uploaded data
         predictions_df = pd.DataFrame({
-        'Predicted Churn': churn_prediction(
-            Gender=df_uploaded['Gender'].tolist(),
-            Total_Revolving_Bal=df_uploaded['Total_Revolving_Bal'].tolist(),
-            Total_Trans_Amt=df_uploaded['Total_Trans_Amt'].tolist(),
-            Total_Trans_Ct=df_uploaded['Total_Trans_Ct'].tolist(),
-            Total_Relationship_Count=df_uploaded['Total_Relationship_Count'].tolist(),
-            Months_Inactive_12_mon=df_uploaded['Months_Inactive_12_mon'].tolist()
-        )
-    })
-
+         'Predicted Churn': churn_prediction(
+        Gender= np.asarray(df_uploaded['Gender']),  
+        Total_Revolving_Bal=np.asarray(df_uploaded['Total_Revolving_Bal']),
+        Total_Trans_Amt= np.asarray(df_uploaded['Total_Trans_Amt']),
+        Total_Trans_Ct= np.asarray(df_uploaded['Total_Trans_Ct']),
+        Total_Relationship_Count=np.asarray(df_uploaded['Total_Relationship_Count']),
+        Months_Inactive_12_mon= np.asarray(df_uploaded['Months_Inactive_12_mon'])
+    )
+})
 
 
         # Combine the original data with predicted results
