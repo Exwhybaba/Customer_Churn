@@ -52,11 +52,11 @@ def churn_prediction(Total_Relationship_Count, Total_Revolving_Bal,Total_Amt_Chn
     prediction = loaded_model.predict(transformed_data)
 
     if prediction[0] == 1:
-        print('The customer is on the verge of churning.')
+        return 'The customer is on the verge of churning.'
     else:
-        print('The customer is not on the verge of churning')
+        return 'The customer is not on the verge of churning'
 
-    return df
+    
 
 
 
