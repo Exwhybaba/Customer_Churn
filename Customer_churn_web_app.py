@@ -4,12 +4,17 @@ import io
 import pickle
 import pandas as pd
 import numpy as np
+from io import BytesIO
 
 # GitHub raw content URL for your model file
-model_path = r"C:\Users\Administrator\Documents\AIsat\Group_Project\model_and_transformers2.sav"
+raw_model_url = "https://raw.githubusercontent.com/your-username/your-repository/main/model_and_transformers2.sav"
+
+# Download the model file
+response = requests.get(raw_model_url)
+model_content = BytesIO(response.content)
 
 # Load the model and transformers
-with open(model_path, 'rb') as file:
+with open(model_content, 'rb') as file:
     loaded_model, scaler, normalizer = pickle.load(file)
 
 # Define global variables with default values
