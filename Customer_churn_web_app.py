@@ -4,6 +4,8 @@ import io
 from sklearn.preprocessing import LabelEncoder, OrdinalEncoder, Normalizer, MinMaxScaler, StandardScaler, OneHotEncoder,LabelBinarizer
 import pickle
 import requests
+import pandas as pd 
+
 
 # GitHub raw content URL for your model file
 model_url = 'https://raw.githubusercontent.com/Exwhybaba/Customer_Churn/main/model_and_transformers.sav'
