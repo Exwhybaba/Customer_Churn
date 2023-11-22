@@ -32,8 +32,7 @@ from sklearn.metrics import confusion_matrix
 # In[4]:
 
 
-path = r"C:\Users\Administrator\Documents\AIsat\Group_Project\credit_card_churn.csv"
-
+path = "https://raw.githubusercontent.com/Exwhybaba/Customer_Churn/main/credit_card_churn.csv"
 
 # In[5]:
 
