@@ -326,24 +326,9 @@ columntoDrop = ['Attrition_Flag']
 X_train_df.drop(columns=columntoDrop, inplace= True)
 
 
-# In[82]:
 
+RFE_ = ['Total_Relationship_Count', 'Total_Revolving_Bal', 'Total_Amt_Chng_Q4_Q1','Total_Trans_Amt', 'Total_Trans_Ct', 'Total_Ct_Chng_Q4_Q1']
 
-from sklearn.feature_selection import RFE
-X = X_train_df.values
-Y = y_train
-model = RandomForestClassifier() 
-rfe = RFE(model, n_features_to_select=6)
-fit = rfe.fit(X,Y) 
-print(fit.support_)
-print(fit.ranking_)
-
-
-# In[83]:
-
-
-RFE_ = [name for name, value in zip(X_train_df.columns, fit.ranking_) if value == 1]
-len(RFE_)
 
 
 # In[84]:
@@ -353,36 +338,6 @@ len(RFE_)
 
 X_train = X_train_df[RFE_].values
 X_test = X_test_df[RFE_].values
-
-
-# In[86]:
-
-
-# Spot-Check Classifier Algorithms
-models = []
-models.append(('LR', LogisticRegression()))
-models.append(('Ridge', RidgeClassifier()))
-models.append(('Lasso', Lasso()))
-models.append(('KNN', KNeighborsClassifier()))
-models.append(('CART', DecisionTreeClassifier()))
-models.append(('RF', RandomForestClassifier()))
-models.append(('SVM', SVC()))
-
-# Evaluate each model in turn
-results = []
-names = []
-for name, model in models:
-    kfold = KFold(n_splits=10, shuffle=True, random_state=7)
-    cv_results = cross_val_score(model, X_train, y_train, cv=kfold, scoring='accuracy')
-    results.append(cv_results)
-    names.append(name)
-    msg = "%s: %f (%f)" % (name, cv_results.mean(), cv_results.std())
-    print(msg)
-
-
-# In[87]:
-
-# In[88]:
 
 
 #Rescaling
@@ -428,26 +383,6 @@ X_test = NR_Xtest
 # In[95]:
 
 
-# Spot-Check Classifier Algorithms
-models = []
-models.append(('LR', LogisticRegression()))
-models.append(('Ridge', RidgeClassifier()))
-models.append(('Lasso', Lasso()))
-models.append(('KNN', KNeighborsClassifier()))
-models.append(('CART', DecisionTreeClassifier()))
-models.append(('RF', RandomForestClassifier()))
-models.append(('SVM', SVC()))
-
-# Evaluate each model in turn
-results = []
-names = []
-for name, model in models:
-    kfold = KFold(n_splits=10, shuffle=True, random_state=7)
-    cv_results = cross_val_score(model, X_train, y_train, cv=kfold, scoring='accuracy')
-    results.append(cv_results)
-    names.append(name)
-    msg = "%s: %f (%f)" % (name, cv_results.mean(), cv_results.std())
-    print(msg)
 
 
 
