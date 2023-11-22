@@ -445,6 +445,9 @@ def churn_prediction(Total_Relationship_Count, Total_Revolving_Bal, Total_Amt_Ch
 
 # Main function
 def main():
+    # Setting page layout with wide mode
+    st.set_page_config(layout="wide")
+
     # Background image and animated header
     st.markdown(
         f"""
@@ -546,8 +549,8 @@ with col2:
     if st.button('Predict Customer Churn', key='prediction_button', help="Click to predict customer churn"):
         with st.spinner('Predicting...'):
             # Prediction logic
-            attrition = churn_prediction(Gender, Total_Revolving_Bal, Total_Trans_Amt, Total_Trans_Ct,
-                                         Total_Relationship_Count, Months_Inactive_12_mon)
+            attrition = churn_prediction(Total_Relationship_Count, Total_Revolving_Bal, Total_Amt_Chng_Q4_Q1,
+                    Total_Trans_Amt, Total_Trans_Ct, Total_Ct_Chng_Q4_Q1)
 
         # Display prediction result with custom styling and icons
         result_placeholder = st.empty()
