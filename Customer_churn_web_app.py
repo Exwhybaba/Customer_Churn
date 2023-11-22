@@ -490,7 +490,7 @@ def main():
     )
 
 # Single column layout
-col1 = st.beta_container()
+col1 = st.container()
 
 # Animated button for prediction with a success icon
 if col1.button('Predict Customer Churn', key='prediction_button', help="Click to predict customer churn"):
