@@ -158,10 +158,11 @@ def main():
                 
             # Display prediction result with custom styling and icon
             result_placeholder = st.empty()
-            if attrition[0] == '1':
-                result_placeholder.error('❗ The customer is on the verge of churning. 🚨')
+            if attrition[0] == 0:
+                result_placeholder.success('🎉 The customer is not on the verge of churning. 🌟)
             else:
-                result_placeholder.success('🎉 The customer is not on the verge of churning. 🌟')
+                result_placeholder.error('❗ The customer is on the verge of churning. 🚨')
+                
 
 
 
