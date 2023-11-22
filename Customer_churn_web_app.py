@@ -151,14 +151,13 @@ def main():
     
         # Animated button for prediction with a success icon
         if st.button('Predict Customer Churn', key='prediction_button', help="Click to predict customer churn"):
-        with st.spinner('Predicting ⏳...'):
+            with st.spinner('Predicting ⏳...'):
             # Prediction logic
-            attrition = churn_prediction(Total_Relationship_Count, Total_Revolving_Bal, Total_Amt_Chng_Q4_Q1,
+                attrition = churn_prediction(Total_Relationship_Count, Total_Revolving_Bal, Total_Amt_Chng_Q4_Q1,
                 Total_Trans_Amt, Total_Trans_Ct, Total_Ct_Chng_Q4_Q1)
 
-            # Display prediction result with custom styling and icons
+            # Display prediction result with custom styling and icon
             result_placeholder = st.empty()
-            # Check if the predicted value is 1
             if attrition[0] == 1:   
                 result_placeholder.error('❗ The customer is on the verge of churning. 🚨')
             else:
