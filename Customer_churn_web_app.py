@@ -443,10 +443,19 @@ def churn_prediction(Total_Relationship_Count, Total_Revolving_Bal, Total_Amt_Ch
 
 
 
+# Custom CSS to widen the layout
+custom_css = """
+    <style>
+        .main {
+            max-width: 1200px;
+        }
+    </style>
+"""
+
 # Main function
 def main():
-    # Setting page layout with wide mode
-    st.set_page_config(layout="wide")
+    # Add custom CSS to widen the layout
+    st.markdown(custom_css, unsafe_allow_html=True)
 
     # Background image and animated header
     st.markdown(
