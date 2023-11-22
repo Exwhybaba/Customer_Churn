@@ -179,7 +179,7 @@ def main():
         
         # Make predictions for the uploaded data
         uploaded_df2np = np.asarray(uploaded_df)
-        predicted_value = model.predict(uploaded_df2np)
+        predicted_value = loaded_model.predict(uploaded_df2np)
         uploaded_df['predicted_churn'] = predicted_value.reshape(-1,1)
     
         # Download the CSV file with a download icon
