@@ -6,17 +6,12 @@ import pandas as pd
 import numpy as np
 from io import BytesIO
 
-import requests
-from io import BytesIO
-import pickle
-
 # GitHub raw content URL for your model file
 raw_model_url = "https://raw.githubusercontent.com/Exwhybaba/Customer_Churn/main/model_and_transformers2.sav"
 
-
 # Download the model file
 response = requests.get(raw_model_url)
-model_content = io.BytesIO(response.content)
+model_content = BytesIO(response.content)
 
 # Load the model and transformers
 with open(model_content, 'rb') as file:
