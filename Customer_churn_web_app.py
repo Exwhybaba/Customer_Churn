@@ -584,6 +584,12 @@ with col2:
     result_placeholder = st.empty()
     result_placeholder.text("Waiting for predictions...")
 
+    # Helper function to set page config only once
+    def set_page_config_once():
+        if not hasattr(st, '_page_config_called'):
+            st.set_page_config(layout="wide")
+            st._page_config_called = True
+
 
 if __name__ == '__main__':
     main()
