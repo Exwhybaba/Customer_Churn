@@ -6,7 +6,8 @@ import pickle
 import requests
 
 # GitHub raw content URL for your model file
-model_url = 'https://raw.githubusercontent.com/your-username/your-repo/main/model_and_transformers.sav'
+model_url = 'https://raw.githubusercontent.com/Exwhybaba/Customer_Churn/main/model_and_transformers.sav'
+
 
 # Download the model file
 response = requests.get(model_url)
