@@ -144,19 +144,6 @@ catgorical = df1.select_dtypes('object')
 catgorical
 
 
-# In[20]:
-
-
-def bar(df, column, figsize=[8,6]):
-    plt.style.use('seaborn-darkgrid')
-    plt.figure(figsize=figsize)
-    color = sb.color_palette()[0]
-    base_order = df[column].value_counts().index
-    bar = sb.countplot(data=df, x=column, color=color, order=base_order)
-    plt.title(column + ' '+ 'Distribution')
-    plt.xlabel(column)
-    plt.ylabel('Counts')
-    plt.xticks(rotation=20)
 
 
 # In[21]:
@@ -169,22 +156,8 @@ catgorical.columns
 # In[22]:
 
 
-for cate in catgorical.columns:
-    bar(df1, cate)
 
 
-# In[23]:
-
-
-bar(df1, 'Age_Group')
-
-
-# In[24]:
-
-
-age_group_counts = df1['Age_Group'].value_counts()
-plt.figure(figsize=(6, 6))
-plt.pie(age_group_counts, labels=age_group_counts.index, autopct='%1.1f%%', startangle=90, colors=sb.color_palette('pastel'));
 
 
 # In[25]:
@@ -209,238 +182,9 @@ df1.describe().T
 # In[28]:
 
 
-plt.figure(figsize=(25, 20), dpi= 100)
-df1.plot(kind='density', subplots=True, layout=(5,4), sharex=False, sharey=False)
-plt.gcf().set_size_inches(20,20)
-plt.tight_layout()
-plt.show();
-
-
-# In[29]:
-
-
-plt.figure(figsize=(25, 20), dpi=60)
-df1.plot(kind='box', subplots=True, layout=(4,5), sharex=False, sharey=False)
-plt.gcf().set_size_inches(20,20)
-plt.tight_layout()
-plt.show()
-
-
-# In[30]:
-
-
-color = sb.color_palette()[0]
-plt.figure(figsize= [10,6])
-sb.barplot(data= df1, x = 'Card_Category', y= 'Customer_Age', errorbar= None, color= color);
-plt.title('Customer Age by Card Category')
-plt.xlabel('Card Category')
-plt.ylabel('Customer Age')
-
 
 # In[31]:
 
-
-color = sb.color_palette()[0]
-plt.figure(figsize= [10,6])
-sb.countplot(data= df1, x= 'Age_Group', hue= 'Attrition_Flag');
-
-
-# In[32]:
-
-
-plt.figure(figsize= [12,6])
-sb.countplot(data= df1, x= 'Education_Level', hue= 'Attrition_Flag')
-
-
-# In[33]:
-
-
-plt.figure(figsize= [12,6])
-sb.countplot(data= df1, x= 'Gender', hue= 'Attrition_Flag')
-
-
-# In[34]:
-
-
-df1.columns
-
-
-# In[35]:
-
-
-color = sb.color_palette()[0]
-plt.figure(figsize= [10,6])
-sb.boxplot(data= df1, x = 'Income_Category', y= 'Customer_Age', color= color);
-plt.title('Customer Age by Income Category')
-plt.xlabel('Income_Category')
-plt.ylabel('Customer Age');
-
-
-# ## Financial Information
-
-# In[36]:
-
-
-plt.figure(figsize=(8, 6))
-sb.heatmap(df1[['Credit_Limit', 'Avg_Open_To_Buy', 'Total_Revolving_Bal', 'Avg_Utilization_Ratio']].corr(),
-           annot= True, cmap= 'coolwarm')
-
-
-# In[37]:
-
-
-financialColumns = ['Credit_Limit', 'Total_Revolving_Bal', 'Avg_Utilization_Ratio']
-def finbar(df, x, y ):
-    color = sb.color_palette()[0]
-    plt.figure(figsize= [10,6])
-    sb.barplot(data= df1, x = x, y= y, color= color, errorbar= None);
-    plt.title(f'{y} by {x}')
-    plt.xlabel(x)
-    plt.ylabel(y)
-    
-for i in financialColumns:
-    finbar(df1, 'Age_Group', i)
-
-
-# In[38]:
-
-
-finbar(df1, 'Age_Group', 'Credit_Limit')
-
-
-# ## Transaction and Engagement
-
-# In[39]:
-
-
-plt.figure(figsize=(8, 6))
-sb.heatmap(df1[['Total_Trans_Amt', 'Total_Trans_Ct', 'Months_Inactive_12_mon', 'Contacts_Count_12_mon']].corr(),
-           annot= True, cmap= 'coolwarm');
-
-
-# In[40]:
-
-
-transEngColumns = ['Total_Trans_Amt', 'Total_Trans_Ct', 'Months_Inactive_12_mon', 'Contacts_Count_12_mon']
-def finbar(df, x, y ):
-    color = sb.color_palette()[0]
-    plt.figure(figsize= [10,6])
-    sb.barplot(data= df1, x = x, y= y, color= color, errorbar= None);
-    plt.title(f'{y} by {x}')
-    plt.xlabel(x)
-    plt.ylabel(y)
-    
-for i in transEngColumns:
-    finbar(df1, 'Age_Group', i)
-
-
-# ## Customer Demographics
-
-# In[41]:
-
-
-demoColumns = ['Age_Group', 'Marital_Status', 'Education_Level', 'Gender', 'Income_Category', 'Card_Category' ]
-def churn(column):
-        finChurn = df1.groupby([column, 'Attrition_Flag']).size().unstack()
-        return finChurn.plot(kind='bar', stacked=True, figsize=(10,8), 
-                             title = 'Distribution of Attrition Based on' + ' ' + i, xlabel = column, ylabel = 'Count')
-for i in demoColumns:
-    churn(i)  
-
-
-# In[42]:
-
-
-df1['Months_on_book'].max()
-
-
-# In[43]:
-
-
-def violine(df, x):
-    plt.figure(figsize= [12,6])
-    color = sb.color_palette()[0]
-    sb.violinplot(data= df1, y= 'Months_on_book', x= x, color= color)
-    plt.title(f'Month on Book by {x}')
-    plt.xlabel(x)
-    plt.ylabel('Month on Book')
-    
-for i in demoColumns:
-    violine(df1, i)  
-
-
-# In[44]:
-
-
-plt.figure(figsize=[25, 20], dpi= 100)
-sb.catplot(x='Months_Inactive_12_mon', hue='Gender', col='Age_Group', kind='count', data=df1, col_wrap=3, height=6,
-           aspect=1.2, sharey=False, sharex= False);
-#plt.suptitle('Count of Months Inactive by Age Group and Gender', fontsize=18)
-plt.show();
-
-
-# In[45]:
-
-
-plt.figure(figsize=[25, 20], dpi= 100)
-sb.catplot(x='Months_Inactive_12_mon', hue='Attrition_Flag', col='Age_Group', kind='count', data=df1, col_wrap=3, height=6,
-           aspect=1.2, sharey=False, sharex= False);
-
-
-# In[46]:
-
-
-number.columns
-
-
-# In[47]:
-
-
-plt.style.use('seaborn-darkgrid')
-plt.figure(figsize= [12,6])
-df1.groupby(df1['Months_on_book'])['Total_Trans_Ct'].mean().plot(kind = 'line', color='blue',
-                                    marker='o', linestyle='--', linewidth=2, markersize=8)
-plt.title('Average Total Transaction Count Over Months', fontsize=16)
-plt.xlabel('Months on Book', fontsize=14)
-plt.ylabel('Mean Total Transaction Count', fontsize=14)
-plt.grid(True, linestyle='--', alpha=0.7)
-
-
-# In[48]:
-
-
-plt.style.use('seaborn-darkgrid')
-plt.figure(figsize= [12,6])
-df1.groupby(df1['Months_on_book'])['Avg_Utilization_Ratio'].mean().plot(kind = 'line', color='blue',
-                                    marker='o', linestyle='--', linewidth=2, markersize=8)
-plt.title('Average Utilization_Ratio Count Over Months', fontsize=16)
-plt.xlabel('Months on Book', fontsize=14)
-plt.ylabel('Mean Total Transaction Count', fontsize=14)
-plt.grid(True, linestyle='--', alpha=0.7)
-
-
-# In[49]:
-
-
-plt.figure(figsize= [12,6])
-df1.groupby(df1['Months_on_book'])['Total_Revolving_Bal'].mean().plot(kind = 'line', color='blue',
-                                    marker='o', linestyle='--', linewidth=2, markersize=8)
-plt.title('Average Total_Revolving_Bal Over Months', fontsize=16)
-plt.xlabel('Months on Book', fontsize=14)
-plt.ylabel('Mean Total_Revolving_Bal', fontsize=14)
-plt.grid(True, linestyle='--', alpha=0.7)
-
-
-# ## Data Preprocessing
-
-# In[50]:
-
-
-plt.figure(figsize=(25, 20), dpi=100)
-df1.plot(kind='box', subplots=True, layout=(5,4), sharex=False, sharey=False)
-plt.gcf().set_size_inches(20,20)
-plt.tight_layout()
-plt.show()
 
 
 # ### Treating for Outliers
@@ -509,14 +253,7 @@ df1.drop(df1[df1['Total_Ct_Chng_Q4_Q1'].isin(sample_outliers)].index, inplace=Tr
 df1.shape
 
 
-# In[59]:
-
-
-plt.figure(figsize=(25, 20), dpi=100)
-df1.plot(kind='box', subplots=True, layout=(4,5), sharex=False, sharey=False)
-plt.gcf().set_size_inches(20,20)
-plt.tight_layout()
-plt.show()
+# In[59]
 
 
 # ## Encoding
@@ -721,7 +458,7 @@ X_train.info()
 
 
 X_train_df = pd.DataFrame(X_train, columns = feature)
-X_train_df.describe().T
+#X_train_df.describe().T
 
 
 # In[76]:
@@ -738,12 +475,6 @@ X_test_df = pd.DataFrame(X_test, columns = feature)
 X_train_df['Attrition_Flag'] = y_train
 
 
-# In[78]:
-
-
-corr = X_train_df.corr()
-plt.figure(figsize=(35, 15))
-sb.heatmap(corr, annot=True, cmap="YlGnBu", vmin=-1, vmax=1, fmt=".2f", mask=np.triu(np.ones_like(corr, dtype=bool)))
 
 
 # In[79]:
@@ -752,14 +483,6 @@ sb.heatmap(corr, annot=True, cmap="YlGnBu", vmin=-1, vmax=1, fmt=".2f", mask=np.
 columntoDrop = ['Avg_Open_To_Buy', 'NB_Classifier_2', 'NB_Classifier_1']
 X_test_df.drop(columns=columntoDrop, inplace= True)
 X_train_df.drop(columns=columntoDrop, inplace= True)
-
-
-# In[80]:
-
-
-corr = X_train_df.corr()
-plt.figure(figsize=(35, 15))
-sb.heatmap(corr, annot=True, cmap="YlGnBu", vmin=-1, vmax=1, fmt=".2f", mask=np.triu(np.ones_like(corr, dtype=bool)))
 
 
 # In[81]:
@@ -849,14 +572,6 @@ R_Xtrain_df = pd.DataFrame(R_Xtrain, columns = X_train_df[RFE_].columns)
 R_Xtrain_df.describe().T
 
 
-# In[90]:
-
-
-plt.figure(figsize=(25, 20), dpi= 100)
-R_Xtrain_df.plot(kind='density', subplots=True, layout=(2,3), sharex=False, sharey=False)
-plt.gcf().set_size_inches(20,20)
-plt.tight_layout()
-plt.show();
 
 
 # In[91]:
@@ -872,17 +587,11 @@ NR_Xtest = normalizer.transform(R_Xtest)
 
 
 NR_Xtrain_df = pd.DataFrame(NR_Xtrain, columns = X_train_df[RFE_].columns)
-NR_Xtrain_df.describe().T
+#NR_Xtrain_df.describe().T
 
 
 # In[93]:
 
-
-plt.figure(figsize=(25, 20), dpi= 100)
-NR_Xtrain_df.plot(kind='density', subplots=True, layout=(2,3), sharex=False, sharey=False)
-plt.gcf().set_size_inches(20,20)
-plt.tight_layout()
-plt.show();
 
 
 # In[94]:
@@ -921,12 +630,12 @@ for name, model in models:
 
 
 # Compare Algorithms
-fig = plt.figure()
-fig.suptitle('Algorithm Comparison')
-ax = fig.add_subplot(111)
-plt.boxplot(results)
-ax.set_xticklabels(names)
-plt.show()
+#fig = plt.figure()
+#fig.suptitle('Algorithm Comparison')
+#ax = fig.add_subplot(111)
+#plt.boxplot(results)
+#ax.set_xticklabels(names)
+p#lt.show()
 
 
 # In[97]:
@@ -937,53 +646,13 @@ model.fit(X_train, y_train)
 y_pred = model.predict(X_test)
 
 
-# In[98]:
 
-
-# Evaluate the model and print the results
-print(classification_report(y_test, y_pred))
-print('F1-score: ', f1_score(y_test, y_pred))
-
-
-# In[99]:
-
-
-# Calculate confusion matrix
-cm = confusion_matrix(y_test, y_pred)
-
-print("Confusion Matrix:")
-print(cm)
-
-
-# ## Plotting ROC Curve
 
 # In[100]:
 
 
-# Calculate the ROC curve
-fpr, tpr, thresholds = roc_curve(y_test, y_pred)
-# Calculate the area under the ROC curve (AUC)
-roc_auc = auc(fpr, tpr)
-
-# Plotting the ROC curve
-plt.figure(figsize=(8, 8))
-#plot the diagonal 50% LINE
-plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
-#plot the fpr, tpr achieved by our model
-plt.plot(fpr, tpr, color='darkorange', lw=2, label=f'AUC = {roc_auc:.2f}')
-plt.xlabel('False Positive Rate (FPR)')
-plt.ylabel('True Positive Rate (TPR) - Sensitivity')
-plt.title('ROC Curve')
-plt.legend(loc='lower right')
-plt.show()
 
 
-# In[101]:
-
-
-filename = 'model_trained.sav'
-pickle.dump(model, open(filename, mode= 'wb'))
-loaded_model = pickle.load(open(filename, mode= 'rb'))
 
 
 # In[102]:
