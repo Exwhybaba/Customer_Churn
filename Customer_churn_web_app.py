@@ -4,7 +4,6 @@ import io
 import pandas as pd
 import seaborn as sb
 import matplotlib.pyplot as plt
-get_ipython().run_line_magic('matplotlib', 'inline')
 import zipfile as zf
 import glob
 import os
