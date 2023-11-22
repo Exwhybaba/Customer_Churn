@@ -1,64 +1,53 @@
 import streamlit as st
 import requests
 import io
-from sklearn.preprocessing import LabelEncoder, OrdinalEncoder, Normalizer, MinMaxScaler, StandardScaler, OneHotEncoder,LabelBinarizer
 import pickle
-import requests
-import pandas as pd 
+import pandas as pd
 import numpy as np
 
-
-
-
-
 # GitHub raw content URL for your model file
-model_url = 'https://raw.githubusercontent.com/Exwhybaba/Customer_Churn/main/model_and_transformers.sav'
-
-
-# Download the model file
-response = requests.get(model_url)
-with open('model_and_transformers.sav', 'wb') as file:
-    file.write(response.content)
+model_path = r"C:\Users\Administrator\Documents\AIsat\Group_Project\model_and_transformers2.sav"
 
 # Load the model and transformers
-with open('model_and_transformers.sav', 'rb') as file:
+with open(model_path, 'rb') as file:
     loaded_model, scaler, normalizer = pickle.load(file)
 
+# Define global variables with default values
+total_relationship_count = 1
+total_revolving_bal = 0
+total_amt_chng_q4_q1 = 0.275
+total_trans_amt = 510
+total_trans_ct = 10
+total_ct_chng_q4_q1 = 0.206
 
-
-def churn_prediction(Total_Relationship_Count, Total_Revolving_Bal,Total_Amt_Chng_Q4_Q1, Total_Trans_Amt, Total_Trans_Ct,Total_Ct_Chng_Q4_Q1):
+def churn_prediction(rel_count, revol_bal, amt_chng_q4_q1, trans_amt, trans_ct, ct_chng_q4_q1):
     data = {
-        'Total_Relationship_Count': [Total_Relationship_Count],
-        'Total_Revolving_Bal' : [Total_Revolving_Bal], 
-        'Total_Amt_Chng_Q4_Q1' : [Total_Amt_Chng_Q4_Q1],
-        'Total_Trans_Amt' : [Total_Trans_Amt], 
-        'Total_Trans_Ct' : [Total_Trans_Ct], 
-        'Total_Ct_Chng_Q4_Q1' : [Total_Ct_Chng_Q4_Q1]
-        
+        'Total_Relationship_Count': [rel_count],
+        'Total_Revolving_Bal': [revol_bal],
+        'Total_Amt_Chng_Q4_Q1': [amt_chng_q4_q1],
+        'Total_Trans_Amt': [trans_amt],
+        'Total_Trans_Ct': [trans_ct],
+        'Total_Ct_Chng_Q4_Q1': [ct_chng_q4_q1]
     }
     df = pd.DataFrame(data)
     df2array = np.asarray(df)
     reshape_array = df2array.reshape(1, -1)
 
+    
     def transformation(reshape_array):
         scaler_reshape = scaler.transform(reshape_array)
         normalizer_reshape = normalizer.transform(scaler_reshape)
         return normalizer_reshape
 
-    #transform data
+    # Transform data
     transformed_data = transformation(reshape_array)
 
-    # make prediction
+
+    # Make prediction
     prediction = loaded_model.predict(transformed_data)
-
-    if prediction[0] == 1:
-        return 'The customer is on the verge of churning.'
-    else:
-        return 'The customer is not on the verge of churning'
-
     
 
-
+    return prediction[0]
 
 
 
@@ -71,7 +60,7 @@ def main():
     )
 
     # Header image with centered alignment
-    st.image("https://raw.githubusercontent.com/Exwhybaba/Customer_Churn/main/Customer-Churn.png",
+    st.image(r"C:\Users\Administrator\Documents\AIsat\Group_Project\Customer-Churn.png",
              caption="Predict Customer Churn",
              use_column_width=True,
              )
@@ -82,7 +71,6 @@ def main():
         unsafe_allow_html=True
     )
 
-    
     st.sidebar.subheader("Legend")
     st.sidebar.markdown('- **Total Relationship Count**: Enter the total relationship count.')
     st.sidebar.markdown('- **Total Revolving Balance**: Enter the total revolving balance.')
@@ -91,7 +79,6 @@ def main():
     st.sidebar.markdown('- **Total Transaction Count**: Enter the total transaction count.')
     st.sidebar.markdown('- **Total Count Change Q4-Q1**: Enter the total count change from Q4 to Q1.')
 
-
     # Main content layout with rounded corners
     st.markdown(
         '<style>div.Widget.stButton button{border-radius: 10px;}</style>',
@@ -99,74 +86,65 @@ def main():
     )
 
     col1, col2 = st.columns(2)
-    
+
     # First column
     with col1:
-        Total_Relationship_Count_min = 1
-        Total_Relationship_Count_max = 6
-        Total_Relationship_Count = st.number_input('Total Relationship Count',
-                                                   min_value=Total_Relationship_Count_min,
-                                                   max_value=Total_Relationship_Count_max,
-                                                   value=Total_Relationship_Count_min)
-    
-        Total_Revolving_Bal_min = 0
-        Total_Revolving_Bal_max = 2517
-        Total_Revolving_Bal = st.number_input('Total Revolving Balance',
-                                              min_value=Total_Revolving_Bal_min,
-                                              max_value=Total_Revolving_Bal_max,
-                                              value=Total_Revolving_Bal_min, 
-                                             )
-    
-        Total_Amt_Chng_Q4_Q1_min = 0.275
-        Total_Amt_Chng_Q4_Q1_max = 1.212
-        Total_Amt_Chng_Q4_Q1 = st.slider('Total Amount Change Q4-Q1',
-                                               min_value=Total_Amt_Chng_Q4_Q1_min,
-                                               max_value=Total_Amt_Chng_Q4_Q1_max,
-                                               value=Total_Amt_Chng_Q4_Q1_min,
-                                           step=0.001)
-    
+        # Use the global variables within this block
+        total_relationship_count = st.number_input('Total Relationship Count',
+                                                   min_value=1,
+                                                   max_value=6,
+                                                   value=1)
+
+        total_revolving_bal = st.number_input('Total Revolving Balance',
+                                              min_value=0,
+                                              max_value=2517,
+                                              value=0)
+
+        total_amt_chng_q4_q1 = st.slider('Total Amount Change Q4-Q1',
+                                         min_value=0.275,
+                                         max_value=1.212,
+                                         value=0.275,
+                                         step=0.001)
+
     # Second column
     with col2:
-        Total_Trans_Amt_min = 510
-        Total_Trans_Amt_max = 8618
-        Total_Trans_Amt = st.number_input('Total Transaction Amount',
-                                          min_value=Total_Trans_Amt_min,
-                                          max_value=Total_Trans_Amt_max,
-                                          value=Total_Trans_Amt_min)
-    
-        Total_Trans_Ct_min = 10
-        Total_Trans_Ct_max = 113
-        Total_Trans_Ct = st.number_input('Total Transaction Count',
-                                         min_value=Total_Trans_Ct_min,
-                                         max_value=Total_Trans_Ct_max,
-                                         value=Total_Trans_Ct_min)
-    
-        Total_Ct_Chng_Q4_Q1_min = 0.206
-        Total_Ct_Chng_Q4_Q1_max = 1.182
-        Total_Ct_Chng_Q4_Q1 = st.number_input('Total Count Change Q4-Q1',
-                                    min_value=Total_Ct_Chng_Q4_Q1_min,
-                                    max_value=Total_Ct_Chng_Q4_Q1_max,
-                                    value=Total_Ct_Chng_Q4_Q1_min)  
-    
-    
-        # Animated button for prediction with a success icon
-        if st.button('Predict Customer Churn', key='prediction_button', help="Click to predict customer churn"):
-            with st.spinner('Predicting ⏳...'):
-                # Prediction logic
-                attrition = churn_prediction(Total_Relationship_Count, Total_Revolving_Bal, Total_Amt_Chng_Q4_Q1,
-                Total_Trans_Amt, Total_Trans_Ct, Total_Ct_Chng_Q4_Q1)
-                
-            # Display prediction result with custom styling and icon
-            result_placeholder = st.empty()
-            if attrition[0] == 0:
-                result_placeholder.success('🎉 The customer is not on the verge of churning. 🌟')
+        # Use the global variables within this block
+        total_trans_amt = st.number_input('Total Transaction Amount',
+                                          min_value=510,
+                                          max_value=8618,
+                                          value=510)
+
+        total_trans_ct = st.number_input('Total Transaction Count',
+                                         min_value=10,
+                                         max_value=113,
+                                         value=10)
+
+        total_ct_chng_q4_q1 = st.number_input('Total Count Change Q4-Q1',
+                                             min_value=0.206,
+                                             max_value=1.182,
+                                             value=0.206)
+
+    # Animated button for prediction with a success icon
+    if st.button('Predict Customer Churn', key='prediction_button', help="Click to predict customer churn"):
+        with st.spinner('Predicting ⏳...'):
+            # Prediction logic
+            attrition = churn_prediction(total_relationship_count, total_revolving_bal, total_amt_chng_q4_q1,
+                                         total_trans_amt, total_trans_ct, total_ct_chng_q4_q1)
+
+        # Display prediction result with custom styling and icon
+        result_placeholder = st.empty()
+
+        # Check if attrition is not empty and handle the result
+        if attrition is not None:      
+            if attrition == 1:
+                result_placeholder.error(' ❗ The customer is on the verge of churning. 🚨')
             else:
-                result_placeholder.error('❗ The customer is on the verge of churning. 🚨')
-                
+                result_placeholder.success('🎉 The customer is not on the verge of churning. 🌟')
+        else:
+            # Handle the case where attrition is empty or None
+            st.warning('No prediction result. Please check your input values and try again.')
 
-
-
-    # Option to upload a file with a file icon
+     # Option to upload a file with a file icon
     uploaded_file = st.file_uploader("Upload a CSV file with customer data", type=["csv"])
     if uploaded_file is not None:
         # Read the uploaded file
@@ -195,5 +173,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
-
+    main()    
