@@ -578,7 +578,7 @@ with col1:
 
     Total_Amt_Chng_Q4_Q1_min = 0.275
     Total_Amt_Chng_Q4_Q1_max = 1.212
-    Total_Amt_Chng_Q4_Q1 = st.st.slider('Total Amount Change Q4-Q1',
+    Total_Amt_Chng_Q4_Q1 = st.slider('Total Amount Change Q4-Q1',
                                            min_value=Total_Amt_Chng_Q4_Q1_min,
                                            max_value=Total_Amt_Chng_Q4_Q1_max,
                                            value=Total_Amt_Chng_Q4_Q1_min,
@@ -602,11 +602,10 @@ with col2:
 
     Total_Ct_Chng_Q4_Q1_min = 0.206
     Total_Ct_Chng_Q4_Q1_max = 1.182
-    Total_Ct_Chng_Q4_Q1 = st.slider('Total Count Change Q4-Q1',
+    Total_Ct_Chng_Q4_Q1 = st.number_input('Total Count Change Q4-Q1',
                                 min_value=Total_Ct_Chng_Q4_Q1_min,
                                 max_value=Total_Ct_Chng_Q4_Q1_max,
-                                value=Total_Ct_Chng_Q4_Q1_min,
-                                step=0.001)  
+                                value=Total_Ct_Chng_Q4_Q1_min)  
 
 
 
