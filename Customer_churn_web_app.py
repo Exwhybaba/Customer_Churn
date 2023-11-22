@@ -996,6 +996,15 @@ RFE_
 
 # In[103]:
 
+## Loading the model
+url = "https://drive.google.com/file/d/1FFz55ZI78-PwqmESTaTojfYRitImrVxm/view?usp=drive_link"
+response = requests.get(url)
+
+if response.status_code == 200:
+    loaded_model = pickle.loads(response.content)
+else:
+    st.error("Failed to retrieve the model file. Status code: {}".format(response.status_code))
+    st.stop()
 
 def churn_prediction(Total_Relationship_Count, Total_Revolving_Bal, Total_Amt_Chng_Q4_Q1,
                     Total_Trans_Amt, Total_Trans_Ct, Total_Ct_Chng_Q4_Q1):
@@ -1030,15 +1039,7 @@ def churn_prediction(Total_Relationship_Count, Total_Revolving_Bal, Total_Amt_Ch
 
     return df
 
-## Loading the model
-url = "https://raw.githubusercontent.com/Exwhybaba/Customer_Churn/main/trained6_model.sav"
-response = requests.get(url)
 
-if response.status_code == 200:
-    loaded_model = pickle.loads(response.content)
-else:
-    st.error("Failed to retrieve the model file. Status code: {}".format(response.status_code))
-    st.stop()
 
 
 # Main function
@@ -1107,14 +1108,16 @@ with col1:
     Total_Revolving_Bal = st.number_input('Total Revolving Balance',
                                           min_value=Total_Revolving_Bal_min,
                                           max_value=Total_Revolving_Bal_max,
-                                          value=Total_Revolving_Bal_min)
+                                          value=Total_Revolving_Bal_min, 
+                                         )
 
-    Total_Amt_Chng_Q4_Q1_min = 0.0
-    Total_Amt_Chng_Q4_Q1_max = 1.0
-    Total_Amt_Chng_Q4_Q1 = st.number_input('Total Amount Change Q4-Q1',
+    Total_Amt_Chng_Q4_Q1_min = 0.275
+    Total_Amt_Chng_Q4_Q1_max = 1.212
+    Total_Amt_Chng_Q4_Q1 = st.st.slider('Total Amount Change Q4-Q1',
                                            min_value=Total_Amt_Chng_Q4_Q1_min,
                                            max_value=Total_Amt_Chng_Q4_Q1_max,
-                                           value=Total_Amt_Chng_Q4_Q1_min)
+                                           value=Total_Amt_Chng_Q4_Q1_min,
+                                       step=0.001)
 
 # Second column
 with col2:
@@ -1132,13 +1135,13 @@ with col2:
                                      max_value=Total_Trans_Ct_max,
                                      value=Total_Trans_Ct_min)
 
-    Total_Ct_Chng_Q4_Q1_min = 0.275
-    Total_Ct_Chng_Q4_Q1_max = 1.212
+    Total_Ct_Chng_Q4_Q1_min = 0.206
+    Total_Ct_Chng_Q4_Q1_max = 1.182
     Total_Ct_Chng_Q4_Q1 = st.slider('Total Count Change Q4-Q1',
                                 min_value=Total_Ct_Chng_Q4_Q1_min,
                                 max_value=Total_Ct_Chng_Q4_Q1_max,
                                 value=Total_Ct_Chng_Q4_Q1_min,
-                                step=0.001)  # Adjust the step value as needed
+                                step=0.001)  
 
 
 
