@@ -1,14 +1,6 @@
 import streamlit as st
 import requests
 import io
-import pandas as pd
-import seaborn as sb
-import matplotlib.pyplot as plt
-import zipfile as zf
-import glob
-import os
-import numpy as np
-from sklearn.model_selection import train_test_split
 import warnings
 warnings.filterwarnings('ignore')
 from sklearn.preprocessing import LabelEncoder, OrdinalEncoder, Normalizer, MinMaxScaler, StandardScaler, OneHotEncoder,LabelBinarizer
