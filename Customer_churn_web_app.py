@@ -160,11 +160,13 @@ def main():
     
             # Display prediction result with custom styling and icons
             result_placeholder = st.empty()
+            
             # Check if the predicted value is 1
             if attrition == 1:
                 result_placeholder.error('❗ The customer is on the verge of churning. 🚨')
             else:
                 result_placeholder.success('🎉 The customer is not on the verge of churning. 🌟')
+
 
 
         # Option to upload a file with a file icon
