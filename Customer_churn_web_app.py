@@ -75,6 +75,8 @@ def main():
         '<style>div.Widget.row-widget.stRadio div[role="radiogroup"] > label {border-radius: 10px;}</style>',
         unsafe_allow_html=True
     )
+
+    
     st.sidebar.subheader("Legend")
     st.sidebar.markdown('- **Total Relationship Count**: Enter the total relationship count.')
     st.sidebar.markdown('- **Total Revolving Balance**: Enter the total revolving balance.')
