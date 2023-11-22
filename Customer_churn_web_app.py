@@ -11,11 +11,10 @@ raw_model_url = "https://raw.githubusercontent.com/Exwhybaba/Customer_Churn/main
 
 # Download the model file
 response = requests.get(raw_model_url)
-model_content = BytesIO(response.content)
+model_content = response.content
 
 # Load the model and transformers
-with open(model_content, 'rb') as file:
-    loaded_model, scaler, normalizer = pickle.load(file)
+loaded_model, scaler, normalizer = pickle.loads(model_content)
 
 # Define global variables with default values
 total_relationship_count = 1
