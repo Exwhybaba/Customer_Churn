@@ -440,19 +440,11 @@ def churn_prediction(Total_Relationship_Count, Total_Revolving_Bal, Total_Amt_Ch
 
     return df
 
-# Helper function to set page config only once
-def set_page_config_once():
-    if not hasattr(st, '_page_config_called'):
-        st.set_page_config(layout="wide")
-        st._page_config_called = True
 
 
 
 # Main function
 def main():
-    # Set page config only once
-    set_page_config_once()
-
     # Background image and animated header
     st.markdown(
         f"""
