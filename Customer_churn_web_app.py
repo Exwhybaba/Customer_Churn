@@ -155,10 +155,10 @@ def main():
             # Prediction logic
                 attrition = churn_prediction(Total_Relationship_Count, Total_Revolving_Bal, Total_Amt_Chng_Q4_Q1,
                 Total_Trans_Amt, Total_Trans_Ct, Total_Ct_Chng_Q4_Q1)
-
+                print(attrition[0])
             # Display prediction result with custom styling and icon
             result_placeholder = st.empty()
-            if attrition[0] == 1:   
+            if attrition[0] == 1:
                 result_placeholder.error('❗ The customer is on the verge of churning. 🚨')
             else:
                 result_placeholder.success('🎉 The customer is not on the verge of churning. 🌟')
