@@ -1,104 +1,24 @@
 import streamlit as st
 import requests
 import io
-import warnings
-warnings.filterwarnings('ignore')
 from sklearn.preprocessing import LabelEncoder, OrdinalEncoder, Normalizer, MinMaxScaler, StandardScaler, OneHotEncoder,LabelBinarizer
-from sklearn.compose import ColumnTransformer
-from sklearn.model_selection import cross_val_score, KFold
-from sklearn.linear_model import LogisticRegression
-from sklearn.linear_model import RidgeClassifier
-from sklearn.linear_model import Lasso
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.svm import SVC
-from sklearn.metrics import accuracy_score, classification_report,f1_score
-from sklearn.metrics import roc_curve, auc
-from imblearn.over_sampling import SMOTE, ADASYN,SMOTENC
-from imblearn.under_sampling import RandomUnderSampler
 import pickle
-from sklearn.metrics import confusion_matrix 
+import requests
+
+# GitHub raw content URL for your model file
+model_url = 'https://raw.githubusercontent.com/your-username/your-repo/main/model_and_transformers.sav'
+
+# Download the model file
+response = requests.get(model_url)
+with open('model_and_transformers.sav', 'wb') as file:
+    file.write(response.content)
+
+# Load the model and transformers
+with open('model_and_transformers.sav', 'rb') as file:
+    loaded_model, scaler, normalizer = pickle.load(file)
 
 
-# In[4]:
 
-
-path = "https://raw.githubusercontent.com/Exwhybaba/Customer_Churn/main/credit_card_churn.csv"
-
-df1 = pd.read_csv(path)
-
-# Renaming columns
-df1.rename(columns={'Naive_Bayes_Classifier_Attrition_Flag_Card_Category_Contacts_Count_12_mon_Dependent_count_Education_Level_Months_Inactive_12_mon_1': 'NB_Classifier_1',
-                   'Naive_Bayes_Classifier_Attrition_Flag_Card_Category_Contacts_Count_12_mon_Dependent_count_Education_Level_Months_Inactive_12_mon_2': 'NB_Classifier_2'},
-          inplace=True)
-
-# Binning Age
-bins = [20, 35, 50, 100]
-labels = ['Young Adult', 'Adult', 'Senior']
-df1['Age_Group'] = pd.cut(df1['Customer_Age'], bins=bins, labels=labels)
-
-# Extracting categorical and numerical columns
-categorical = df1.select_dtypes('object')
-numerical = df1.select_dtypes('number')
-
-# Handle outliers more efficiently
-def remove_outliers(data, column):
-    q1 = data[column].quantile(0.25)
-    q3 = data[column].quantile(0.75)
-    iqr = q3 - q1
-    lower_bound = q1 - 1.5 * iqr
-    upper_bound = q3 + 1.5 * iqr
-    return data[(data[column] >= lower_bound) & (data[column] <= upper_bound)]
-
-columns_to_remove_outliers = ['Total_Trans_Amt', 'Total_Amt_Chng_Q4_Q1', 'Total_Ct_Chng_Q4_Q1']
-for col in columns_to_remove_outliers:
-    df1 = remove_outliers(df1, col)
-
-# Encoding categorical variables
-ordinal_encoders = {}
-for col in categorical.columns:
-    ordinal_encoders[col] = OrdinalEncoder().fit(df1[[col]])
-    df1[col] = ordinal_encoders[col].transform(df1[[col]])
-
-# Splitting the dataset
-feature_cols = [col for col in df1.columns if col != 'Attrition_Flag']
-target_col = 'Attrition_Flag'
-X_train, X_test, y_train, y_test = train_test_split(df1[feature_cols], df1[target_col], test_size=0.20, random_state=42)
-
-# Apply SMOTENC to balance the dataset
-categorical_features = [2, 4, 5, 6, 7, 22]
-smotenc = SMOTENC(sampling_strategy='auto', categorical_features=categorical_features, random_state=42)
-X_train, y_train = smotenc.fit_resample(X_train, y_train)
-X_test, y_test = smotenc.fit_resample(X_test, y_test)
-
-# Feature Engineering - Encoding
-ordinal_cols_to_encode = ['Education_Level', 'Marital_Status', 'Income_Category', 'Card_Category', 'Age_Group']
-for col in ordinal_cols_to_encode:
-    X_train[col] = ordinal_encoders[col].transform(X_train[[col]])
-    X_test[col] = ordinal_encoders[col].transform(X_test[[col]])
-
-# Feature Engineering - Binarization
-binarizer = LabelBinarizer()
-X_train['Gender'] = binarizer.fit_transform(X_train['Gender'])
-X_test['Gender'] = binarizer.transform(X_test['Gender'])
-
-# Feature Scaling
-scaler = MinMaxScaler(feature_range=(0, 1)).fit(X_train)
-X_train = scaler.transform(X_train)
-X_test = scaler.transform(X_test)
-
-# Feature Normalization
-normalizer = Normalizer().fit(X_train)
-X_train = normalizer.transform(X_train)
-X_test = normalizer.transform(X_test)
-
-# Model Training
-model = RandomForestClassifier(n_estimators=1000)
-model.fit(X_train, y_train)
-
-# Function for churn prediction
-# Function for churn prediction
 def churn_prediction(Total_Relationship_Count, Total_Revolving_Bal, Total_Amt_Chng_Q4_Q1,
                         Total_Trans_Amt, Total_Trans_Ct, Total_Ct_Chng_Q4_Q1):
     transformed_data = normalizer.transform(scaler.transform([[Total_Relationship_Count, Total_Revolving_Bal, Total_Amt_Chng_Q4_Q1,
