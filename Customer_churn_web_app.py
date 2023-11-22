@@ -348,10 +348,6 @@ len(RFE_)
 
 # In[84]:
 
-
-RFE_
-
-
 # In[85]:
 
 
@@ -386,10 +382,6 @@ for name, model in models:
 
 # In[87]:
 
-
-X_train_df[RFE_].describe().T
-
-
 # In[88]:
 
 
@@ -403,7 +395,6 @@ R_Xtest = scaler.transform(X_test)
 
 
 R_Xtrain_df = pd.DataFrame(R_Xtrain, columns = X_train_df[RFE_].columns)
-R_Xtrain_df.describe().T
 
 
 
@@ -421,7 +412,6 @@ NR_Xtest = normalizer.transform(R_Xtest)
 
 
 NR_Xtrain_df = pd.DataFrame(NR_Xtrain, columns = X_train_df[RFE_].columns)
-#NR_Xtrain_df.describe().T
 
 
 # In[93]:
