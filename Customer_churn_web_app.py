@@ -20,7 +20,7 @@ with open('model_and_transformers.sav', 'rb') as file:
 
 
 
-def make_prediction(Total_Relationship_Count, Total_Revolving_Bal,Total_Amt_Chng_Q4_Q1, Total_Trans_Amt, Total_Trans_Ct,Total_Ct_Chng_Q4_Q1):
+def churn_prediction(Total_Relationship_Count, Total_Revolving_Bal,Total_Amt_Chng_Q4_Q1, Total_Trans_Amt, Total_Trans_Ct,Total_Ct_Chng_Q4_Q1):
     data = {
         'Total_Relationship_Count': [Total_Relationship_Count],
         'Total_Revolving_Bal' : [Total_Revolving_Bal], 
