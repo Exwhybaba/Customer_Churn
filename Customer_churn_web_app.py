@@ -489,25 +489,25 @@ def main():
         unsafe_allow_html=True
     )
 
-   # Single column layout
-cols = st.columns(1)
+# Single column layout
+col1 = st.column()
 
 # Animated button for prediction with a success icon
-if cols[0].button('Predict Customer Churn', key='prediction_button', help="Click to predict customer churn"):
-    with cols[0].spinner('Predicting...'):
+if col1.button('Predict Customer Churn', key='prediction_button', help="Click to predict customer churn"):
+    with col1.spinner('Predicting...'):
         # Prediction logic
         attrition = churn_prediction(Gender, Total_Revolving_Bal, Total_Trans_Amt, Total_Trans_Ct,
                                      Total_Relationship_Count, Months_Inactive_12_mon)
 
     # Display prediction result with custom styling and icons
-    result_placeholder = cols[0].empty()
+    result_placeholder = col1.empty()
     if attrition[0] == '1':
         result_placeholder.error('❗ The customer is on the verge of churning. 🚨')
     else:
         result_placeholder.success('🎉 The customer is not on the verge of churning. 🌟')
 
 # Option to upload a file with a file icon
-uploaded_file = cols[0].file_uploader("Upload a CSV file with customer data", type=["csv"])
+uploaded_file = col1.file_uploader("Upload a CSV file with customer data", type=["csv"])
 if uploaded_file is not None:
     # Read the uploaded file
     uploaded_df = pd.read_csv(uploaded_file)
@@ -519,7 +519,7 @@ if uploaded_file is not None:
 
     # Download the CSV file with a download icon
     csv_data = uploaded_df.to_csv(index=False)
-    cols[0].download_button(
+    col1.download_button(
         label="Download Predicted Results",
         data=io.StringIO(csv_data).read(),
         file_name="predicted_results.csv",
@@ -528,7 +528,7 @@ if uploaded_file is not None:
     )
 
 # Real-time updates with placeholder and loading spinner
-result_placeholder = cols[0].empty()
+result_placeholder = col1.empty()
 result_placeholder.text("Waiting for predictions...")
 
 
