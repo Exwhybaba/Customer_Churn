@@ -407,6 +407,7 @@ y_pred = model.predict(X_test)
     #st.stop()
 
 # Function for churn prediction
+# Function for churn prediction
 def churn_prediction(Total_Relationship_Count, Total_Revolving_Bal, Total_Amt_Chng_Q4_Q1,
                     Total_Trans_Amt, Total_Trans_Ct, Total_Ct_Chng_Q4_Q1):
     data = {
@@ -427,11 +428,14 @@ def churn_prediction(Total_Relationship_Count, Total_Revolving_Bal, Total_Amt_Ch
         normalizer_reshape = normalizer.transform(scaler_reshape)
         return normalizer_reshape
 
-    #transform data
+    # Transform data
     transformed_data = transformation(reshape_array)
 
-    # make prediction
+    # Make prediction
     prediction = model.predict(transformed_data)
+
+    # Add predicted_churn column to the DataFrame
+    df['predicted_churn'] = prediction
 
     if prediction[0] == 1:
         print('The customer is on the verge of churning.')
@@ -439,6 +443,7 @@ def churn_prediction(Total_Relationship_Count, Total_Revolving_Bal, Total_Amt_Ch
         print('The customer is not on the verge of churning')
 
     return df
+
 
 
 
