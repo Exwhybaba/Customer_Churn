@@ -462,14 +462,14 @@ y_pred = model.predict(X_test)
 # In[103]:
 
 ## Loading the model
-url = "https://drive.google.com/file/d/1FFz55ZI78-PwqmESTaTojfYRitImrVxm/view?usp=drive_link"
-response = requests.get(url)
+#url = #"https://drive.google.com/file/d/1FFz55ZI78 -PwqmESTaTojfYRitImrVxm/view?usp=drive_link"
+#response = requests.get(url)
 
-if response.status_code == 200:
-    loaded_model = pickle.loads(response.content)
-else:
-    st.error("Failed to retrieve the model file. Status code: {}".format(response.status_code))
-    st.stop()
+#if response.status_code == 200:
+    #loaded_model = pickle.loads(response.content)
+#else:
+    #st.error("Failed to retrieve the model file. #Status code: {}".format(response.status_code))
+    #st.stop()
 
 def churn_prediction(Total_Relationship_Count, Total_Revolving_Bal, Total_Amt_Chng_Q4_Q1,
                     Total_Trans_Amt, Total_Trans_Ct, Total_Ct_Chng_Q4_Q1):
@@ -495,7 +495,7 @@ def churn_prediction(Total_Relationship_Count, Total_Revolving_Bal, Total_Amt_Ch
     transformed_data = transformation(reshape_array)
 
     # make prediction
-    prediction = loaded_model.predict(transformed_data)
+    prediction = model.predict(transformed_data)
 
     if prediction[0] == 1:
         print('The customer is on the verge of churning.')
@@ -632,9 +632,8 @@ with col2:
 
     
         # Make predictions for the uploaded data
-        uploaded_df['Gender'] =  uploaded_df['Gender'].map(lambda x: 0 if x == 'F' else 1)
         uploaded_df2np = np.asarray(uploaded_df)
-        predicted_value = loaded_model.predict(uploaded_df2np)
+        predicted_value = model.predict(uploaded_df2np)
         uploaded_df['predicted_churn'] = predicted_value.reshape(-1,1)
 
         # Download the CSV file with a download icon
