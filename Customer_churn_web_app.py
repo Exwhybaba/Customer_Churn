@@ -1132,12 +1132,14 @@ with col2:
                                      max_value=Total_Trans_Ct_max,
                                      value=Total_Trans_Ct_min)
 
-    Total_Ct_Chng_Q4_Q1_min = 0.0
-    Total_Ct_Chng_Q4_Q1_max = 1.0
-    Total_Ct_Chng_Q4_Q1 = st.number_input('Total Count Change Q4-Q1',
-                                           min_value=Total_Ct_Chng_Q4_Q1_min,
-                                           max_value=Total_Ct_Chng_Q4_Q1_max,
-                                           value=Total_Ct_Chng_Q4_Q1_min)
+    Total_Ct_Chng_Q4_Q1_min = 0.275
+    Total_Ct_Chng_Q4_Q1_max = 1.212
+    Total_Ct_Chng_Q4_Q1 = st.slider('Total Count Change Q4-Q1',
+                                min_value=Total_Ct_Chng_Q4_Q1_min,
+                                max_value=Total_Ct_Chng_Q4_Q1_max,
+                                value=Total_Ct_Chng_Q4_Q1_min,
+                                step=0.001)  # Adjust the step value as needed
+
 
 
     # Animated button for prediction with a success icon
