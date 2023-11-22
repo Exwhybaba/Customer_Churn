@@ -446,22 +446,6 @@ def churn_prediction(Total_Relationship_Count, Total_Revolving_Bal, Total_Amt_Ch
 
 # Main function
 def main():
-    # Setting page layout with wide mode
-    st.set_page_config(layout="wide")
-
-    # Background image and animated header
-    st.markdown(
-        f"""
-        <style>
-            body {{
-                background-image: url("https://raw.githubusercontent.com/Exwhybaba/Customer_Churn/main/abstract-luxury-gradient-blue-background-smooth-dark-blue-with-black-vignette-studio-banner.jpg");
-                background-size: cover;
-            }}
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-
     st.title('🚀 Customer Churn Prediction Web App')
     st.markdown(
         '<p style="font-size: 24px; color: #1F4D7A; animation: pulse 1s infinite;">Predict Customer Churn</p>',
