@@ -19,12 +19,38 @@ with open('model_and_transformers.sav', 'rb') as file:
 
 
 
-def churn_prediction(Total_Relationship_Count, Total_Revolving_Bal, Total_Amt_Chng_Q4_Q1,
-                        Total_Trans_Amt, Total_Trans_Ct, Total_Ct_Chng_Q4_Q1):
-    transformed_data = normalizer.transform(scaler.transform([[Total_Relationship_Count, Total_Revolving_Bal, Total_Amt_Chng_Q4_Q1,
-                        Total_Trans_Amt, Total_Trans_Ct, Total_Ct_Chng_Q4_Q1]]))
-    prediction = model.predict(transformed_data)
-    return prediction[0]
+def make_prediction(Total_Relationship_Count, Total_Revolving_Bal,Total_Amt_Chng_Q4_Q1, Total_Trans_Amt, Total_Trans_Ct,Total_Ct_Chng_Q4_Q1):
+    data = {
+        'Total_Relationship_Count': [Total_Relationship_Count],
+        'Total_Revolving_Bal' : [Total_Revolving_Bal], 
+        'Total_Amt_Chng_Q4_Q1' : [Total_Amt_Chng_Q4_Q1],
+        'Total_Trans_Amt' : [Total_Trans_Amt], 
+        'Total_Trans_Ct' : [Total_Trans_Ct], 
+        'Total_Ct_Chng_Q4_Q1' : [Total_Ct_Chng_Q4_Q1]
+        
+    }
+    df = pd.DataFrame(data)
+    df2array = np.asarray(df)
+    reshape_array = df2array.reshape(1, -1)
+
+    def transformation(reshape_array):
+        scaler_reshape = scaler.transform(reshape_array)
+        normalizer_reshape = normalizer.transform(scaler_reshape)
+        return normalizer_reshape
+
+    #transform data
+    transformed_data = transformation(reshape_array)
+
+    # make prediction
+    prediction = loaded_model.predict(transformed_data)
+
+    if prediction[0] == 1:
+        print('The customer is on the verge of churning.')
+    else:
+        print('The customer is not on the verge of churning')
+
+    return df
+
 
 
 
