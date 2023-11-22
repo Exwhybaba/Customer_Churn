@@ -443,19 +443,11 @@ def churn_prediction(Total_Relationship_Count, Total_Revolving_Bal, Total_Amt_Ch
 
 
 
-# Custom CSS to widen the layout
-custom_css = """
-    <style>
-        .main {
-            max-width: 1200px;
-        }
-    </style>
-"""
 
 # Main function
 def main():
-    # Add custom CSS to widen the layout
-    st.markdown(custom_css, unsafe_allow_html=True)
+    # Setting page layout with wide mode
+    st.set_page_config(layout="wide")
 
     # Background image and animated header
     st.markdown(
@@ -554,16 +546,18 @@ with col2:
 
 
 
+   
     # Animated button for prediction with a success icon
     if st.button('Predict Customer Churn', key='prediction_button', help="Click to predict customer churn"):
         with st.spinner('Predicting...'):
             # Prediction logic
             attrition = churn_prediction(Total_Relationship_Count, Total_Revolving_Bal, Total_Amt_Chng_Q4_Q1,
                     Total_Trans_Amt, Total_Trans_Ct, Total_Ct_Chng_Q4_Q1)
-
+    
         # Display prediction result with custom styling and icons
         result_placeholder = st.empty()
-        if attrition[0] == '1':
+        # Check if the predicted value is 1
+        if attrition['predicted_churn'].iloc[0] == 1:
             result_placeholder.error('❗ The customer is on the verge of churning. 🚨')
         else:
             result_placeholder.success('🎉 The customer is not on the verge of churning. 🌟')
@@ -594,11 +588,6 @@ with col2:
     result_placeholder = st.empty()
     result_placeholder.text("Waiting for predictions...")
 
-    # Helper function to set page config only once
-    def set_page_config_once():
-        if not hasattr(st, '_page_config_called'):
-            st.set_page_config(layout="wide")
-            st._page_config_called = True
 
 
 if __name__ == '__main__':
