@@ -5,6 +5,10 @@ from sklearn.preprocessing import LabelEncoder, OrdinalEncoder, Normalizer, MinM
 import pickle
 import requests
 import pandas as pd 
+import numpy as np
+
+
+
 
 
 # GitHub raw content URL for your model file
