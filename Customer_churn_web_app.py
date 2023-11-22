@@ -47,88 +47,13 @@ path = "https://raw.githubusercontent.com/Exwhybaba/Customer_Churn/main/credit_c
 #filePaths = r"C:\Users\Administrator\Documents\AIsat\Group_Project\datasets"
 
 
-# In[7]:
-
-
-"""files = []
-for file in os.listdir(filePaths):
-    filePath = os.path.join(filePaths, file)
-    for file in glob.glob(os.path.join(filePath, '*csv')):
-        files.append(file)
-    for xlsFile in glob.glob(os.path.join(filePath, '*xlsx')):
-        files.append(xlsFile)
-    
-    """
-
-
-# In[8]:
-
-
-#files
-
-
-# In[9]:
-
-
 df1 = pd.read_csv(path)
-df1
-
-
-# In[10]:
-
-
-df1.info(verbose= 2)
-
-
-# In[11]:
-
-
-df1.shape
-
-
-# In[12]:
-
 
 # renaming the long columns
 df1.rename(columns={'Naive_Bayes_Classifier_Attrition_Flag_Card_Category_Contacts_Count_12_mon_Dependent_count_Education_Level_Months_Inactive_12_mon_1':'NB_Classifier_1',
        'Naive_Bayes_Classifier_Attrition_Flag_Card_Category_Contacts_Count_12_mon_Dependent_count_Education_Level_Months_Inactive_12_mon_2': 'NB_Classifier_2'}, 
           inplace=True)
 
-
-# In[13]:
-
-
-df1
-
-
-# In[14]:
-
-
-#checking for missing values
-df1.isna().sum()
-
-
-# In[15]:
-
-
-df1['Card_Category'].value_counts()
-
-
-# In[16]:
-
-
-#checking for duplicate
-df1.duplicated().sum()
-
-
-# In[17]:
-
-
-print('Maximum Age', df1.Customer_Age.max())
-print('Minimum Age', df1.Customer_Age.min())
-
-
-# In[18]:
 
 
 bins = [20, 35, 50, 100]
@@ -141,46 +66,11 @@ df1['Age_Group'] = pd.cut(df1['Customer_Age'], bins= bins, labels= labels)
 
 #mapping the categorical data
 catgorical = df1.select_dtypes('object')
-catgorical
 
 
-
-
-# In[21]:
-
-
-#checking for categorical columns
-catgorical.columns
-
-
-# In[22]:
-
-
-
-
-
-
-# In[25]:
 
 
 number = df1.select_dtypes('number')
-number
-
-
-# In[26]:
-
-
-number.columns
-
-
-# In[27]:
-
-
-df1.describe().T
-
-
-# In[28]:
-
 
 
 # In[31]:
@@ -208,23 +98,11 @@ def detect_outliers_iqr(data):
     return outliers
 
 
-# In[52]:
-
-
-df1.shape
-
-
 # In[53]:
 
 
 sample_outliers = detect_outliers_iqr(df1['Total_Trans_Amt'])
 df1.drop(df1[df1['Total_Trans_Amt'].isin(sample_outliers)].index, inplace=True)
-
-
-# In[54]:
-
-
-df1.shape
 
 
 # In[55]:
@@ -237,8 +115,6 @@ df1.drop(df1[df1['Total_Amt_Chng_Q4_Q1'].isin(sample_outliers)].index, inplace=T
 # In[56]:
 
 
-df1.shape
-
 
 # In[57]:
 
@@ -247,28 +123,13 @@ sample_outliers = detect_outliers_iqr(df1['Total_Ct_Chng_Q4_Q1'])
 df1.drop(df1[df1['Total_Ct_Chng_Q4_Q1'].isin(sample_outliers)].index, inplace=True)
 
 
-# In[58]:
-
-
-df1.shape
-
-
-# In[59]
-
-
 # ## Encoding
-
-# In[60]:
-
-
-df1.columns
-
 
 # In[61]:
 
 
 cate = df1.select_dtypes('object')
-cate
+
 
 
 # In[62]:
@@ -284,19 +145,8 @@ for i in cate.columns:
 df1['Age_Group'].unique()
 
 
-# In[64]:
-
-
-cate.columns
-
 
 # In[65]:
-
-
-df1['Education_Level'].unique()
-
-
-# In[66]:
 
 
 df1['Attrition_Flag'].unique()
@@ -343,10 +193,6 @@ y_test = y_retst
 
 
 # In[71]:
-
-
-y_train.value_counts()
-
 
 # ## Encoding
 
@@ -442,23 +288,11 @@ X_train['Gender']= binarizer.transform(X_train['Gender'])
 X_test['Gender'] = binarizer.transform(X_test['Gender'])
 
 
-# In[73]:
-
-
-y_test['Attrition_Flag'].unique()
-
-
-# In[74]:
-
-
-X_train.info()
-
-
 # In[75]:
 
 
 X_train_df = pd.DataFrame(X_train, columns = feature)
-#X_train_df.describe().T
+
 
 
 # In[76]:
@@ -626,19 +460,6 @@ for name, model in models:
     print(msg)
 
 
-# In[96]:
-
-
-# Compare Algorithms
-#fig = plt.figure()
-#fig.suptitle('Algorithm Comparison')
-#ax = fig.add_subplot(111)
-#plt.boxplot(results)
-#ax.set_xticklabels(names)
-p#lt.show()
-
-
-# In[97]:
 
 
 model = model = RandomForestClassifier(n_estimators= 1000)
@@ -646,19 +467,6 @@ model.fit(X_train, y_train)
 y_pred = model.predict(X_test)
 
 
-
-
-# In[100]:
-
-
-
-
-
-
-# In[102]:
-
-
-RFE_
 
 
 # In[103]:
