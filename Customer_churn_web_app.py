@@ -178,11 +178,7 @@ def main():
     )
 
     # Header image with centered alignment
-    st.image("https://github.com/Exwhybaba/Customer_Churn/raw/main/Customer-Churn.png",
-             caption="Predict Customer Churn",
-             use_column_width=True,
-             )
-
+    st.markdown('<img src="https://github.com/Exwhybaba/Customer_Churn/raw/main/Customer-Churn.png" alt="Predict Customer Churn" style="width:100%;">', unsafe_allow_html=True)
     # Sidebar layout with rounded corners
     st.sidebar.markdown(
         '<style>div.Widget.row-widget.stRadio div[role="radiogroup"] > label {border-radius: 10px;}</style>',
