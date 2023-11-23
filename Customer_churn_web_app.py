@@ -177,11 +177,8 @@ def main():
         unsafe_allow_html=True
     )
 
-    # Download and display the image
-    image_url = "https://github.com/Exwhybaba/Customer_Churn/raw/main/Customer-Churn.png"
-    image_content = requests.get(image_url).content
-    st.image(image_content, caption="Predict Customer Churn", use_column_width=True)
-
+    # Header image with centered alignment
+    st.markdown('<img src="https://github.com/Exwhybaba/Customer_Churn/raw/main/Customer-Churn.png" alt="Predict Customer Churn" style="width:100%;">', unsafe_allow_html=True)
     # Sidebar layout with rounded corners
     st.sidebar.markdown(
         '<style>div.Widget.row-widget.stRadio div[role="radiogroup"] > label {border-radius: 10px;}</style>',
@@ -271,7 +268,6 @@ if __name__ == '__main__':
         predict_many_individuals()
     else:
         main()
-
 
 
 
