@@ -177,7 +177,7 @@ def main():
         unsafe_allow_html=True
     )
 
-  # Header image with centered alignment
+    # Header image with centered alignment
     st.image("https://github.com/Exwhybaba/Customer_Churn/raw/main/Customer-Churn.png",
              caption="Predict Customer Churn",
              use_column_width=True,
