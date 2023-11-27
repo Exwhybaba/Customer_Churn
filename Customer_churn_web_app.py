@@ -5,7 +5,7 @@ import pickle
 import pandas as pd
 import numpy as np
 
-# GitHub raw content URL for your model file
+# GitHub raw content URL 
 raw_model_url = "https://raw.githubusercontent.com/Exwhybaba/Customer_Churn/main/model_and_transformers2.sav"
 
 # Download the model file
@@ -15,6 +15,17 @@ model_content = response.content
 # Load the model and transformers
 loaded_model, scaler, normalizer = pickle.loads(model_content)
 
+# GitHub raw content URL 
+raw_model_url = "https://raw.githubusercontent.com/Exwhybaba/Customer_Churn/main/model2_and_transformers2.sav"
+
+# Download the model file
+response = requests.get(raw_model_url)
+model_content = response.content
+
+# Load the model and transformers
+loaded_model2, scaler2, normalizer2 = pickle.loads(model_content)
+
+
 # Define global variables with default values
 total_relationship_count = 1
 total_revolving_bal = 0
@@ -22,8 +33,13 @@ total_amt_chng_q4_q1 = 0.275
 total_trans_amt = 510
 total_trans_ct = 10
 total_ct_chng_q4_q1 = 0.206
+Dependent_count = 0
+Months_Inactive_12_mon = 0
+Contacts_Count_12_mon = 0
 
-def churn_prediction(rel_count, revol_bal, amt_chng_q4_q1, trans_amt, trans_ct, ct_chng_q4_q1):
+# Prediction function
+def hybrid_prediction(trans_ct, dep_count, inactive_months, Contacts_Count, revol_bal, rel_count, trans_amt, amt_chng_q4_q1, ct_chng_q4_q1):
+    # Prediction for the first model
     data = {
         'Total_Relationship_Count': [rel_count],
         'Total_Revolving_Bal': [revol_bal],
@@ -44,10 +60,40 @@ def churn_prediction(rel_count, revol_bal, amt_chng_q4_q1, trans_amt, trans_ct, 
     # Transform data
     transformed_data = transformation(reshape_array)
 
-    # Make prediction
-    prediction = loaded_model.predict(transformed_data)
+    # Make prediction1
+    prediction1 = loaded_model.predict(transformed_data)
 
-    return prediction[0]
+    data2 = {
+        'Dependent_count': [dep_count],
+        'Total_Relationship_Count': [rel_count],
+        'Months_Inactive_12_mon': [inactive_months],
+        'Contacts_Count_12_mon': [Contacts_Count],
+        'Total_Trans_Ct': [trans_ct],
+        'Total_Ct_Chng_Q4_Q1': [ct_chng_q4_q1]
+    }
+
+    dfx = pd.DataFrame(data2)
+    dfxarray = np.asarray(dfx)
+    reshapex_array = dfxarray.reshape(1, -1)
+
+    def transformation2(reshapex_array):
+        scaler_reshapex = scaler2.transform(reshapex_array)
+        normalizer_reshapex = normalizer2.transform(scaler_reshapex)
+        return normalizer_reshapex
+
+    # Transform data
+    transformed_data2 = transformation2(reshapex_array)
+
+    # Make prediction2
+    prediction2 = loaded_model2.predict(transformed_data2)
+
+    final_prediction = (prediction1 + prediction2) / 2
+
+    if prediction1 != prediction2:
+        return prediction1[0]
+    else:
+        return final_prediction[0]
+
 
 def predict_single_individual():
     st.title('🚀 Single Individual Churn Prediction')
@@ -68,7 +114,9 @@ def predict_single_individual():
     st.sidebar.markdown('- **Total Transaction Amount**: Enter the total transaction amount.')
     st.sidebar.markdown('- **Total Transaction Count**: Enter the total transaction count.')
     st.sidebar.markdown('- **Total Count Change Q4-Q1**: Enter the total count change from Q4 to Q1.')
-
+    st.sidebar.markdown('- **Dependent count**: Enter the Dependent count.')
+    st.sidebar.markdown("- **Inactive Months in the Past 12 Months**: Please input the number of months you've been inactive within the last 12 months.")
+    st.sidebar.markdown("- **Contacts Count in the Past 12 Months**: Enter the total number of contacts you've had in the last 12 months.")
     col1, col2 = st.columns(2)
 
     with col1:
@@ -88,6 +136,15 @@ def predict_single_individual():
                                          max_value=1.212,
                                          value=0.275,
                                          step=0.001)
+        Dependent_count = st.number_input('Dependent_count',
+                                              min_value=0,
+                                              max_value=5,
+                                              value=0)
+
+        Months_Inactive_12_mon = st.number_input('Months Inactive 12 months',
+                                         min_value=0,
+                                         max_value=6,
+                                         value=0)
 
     with col2:
         # Use the global variables within this block
@@ -101,16 +158,22 @@ def predict_single_individual():
                                          max_value=113,
                                          value=10)
 
-        total_ct_chng_q4_q1 = st.number_input('Total Count Change Q4-Q1',
+        total_ct_chng_q4_q1 = st.slider('Total Count Change Q4-Q1',
                                              min_value=0.206,
                                              max_value=1.182,
-                                             value=0.206)
+                                             value=0.206,
+                                             step=0.001)
+
+        Contacts_Count_12_mon = st.number_input('Contacts Count 12 months',
+                                         min_value= 0,
+                                         max_value= 6,
+                                         value= 0)
 
     if st.button('Predict Customer Churn', key='prediction_button', help="Click to predict customer churn"):
         with st.spinner('Predicting ⏳...'):
             # Prediction logic
-            attrition = churn_prediction(total_relationship_count, total_revolving_bal, total_amt_chng_q4_q1,
-                                         total_trans_amt, total_trans_ct, total_ct_chng_q4_q1)
+            attrition = hybrid_prediction(total_trans_ct, Dependent_count, Months_Inactive_12_mon, Contacts_Count_12_mon, total_revolving_bal, total_relationship_count, 
+                                          total_trans_amt, total_amt_chng_q4_q1, total_ct_chng_q4_q1)
 
         # Display prediction result with custom styling and icon
         result_placeholder = st.empty()
@@ -144,7 +207,9 @@ def predict_many_individuals():
     st.sidebar.markdown('- **Total Transaction Amount**: Enter the total transaction amount.')
     st.sidebar.markdown('- **Total Transaction Count**: Enter the total transaction count.')
     st.sidebar.markdown('- **Total Count Change Q4-Q1**: Enter the total count change from Q4 to Q1.')
-
+    st.sidebar.markdown('- **Dependent count**: Enter the Dependent count.')
+    st.sidebar.markdown("- **Inactive Months in the Past 12 Months**: Please input the number of months you've been inactive within the last 12 months.")
+    st.sidebar.markdown("- **Contacts Count in the Past 12 Months**: Enter the total number of contacts you've had in the last 12 months.")
      # Option to upload a file with a file icon
     uploaded_file = st.file_uploader("Upload a CSV file with customer data", type=["csv"])
     if uploaded_file is not None:
@@ -152,9 +217,12 @@ def predict_many_individuals():
         uploaded_df = pd.read_csv(uploaded_file)
 
         # Make predictions for the uploaded data
-        uploaded_df2np = np.asarray(uploaded_df)
-        predicted_value = loaded_model.predict(uploaded_df2np)
-        uploaded_df['predicted_churn'] = predicted_value.reshape(-1, 1)
+        uploaded_df['predicted_result'] = uploaded_df.apply(lambda row: hybrid_prediction(row['Total_Trans_Ct'], row['Dependent_count'],
+                                                               row['Months_Inactive_12_mon'], row['Contacts_Count_12_mon'],
+                                                               row['Total_Revolving_Bal'], row['Total_Relationship_Count'],
+                                                               row['Total_Trans_Amt'], row['Total_Amt_Chng_Q4_Q1'],
+                                                               row['Total_Ct_Chng_Q4_Q1']), axis=1)
+        uploaded_df['predicted_result'] = uploaded_df['predicted_result'].map(lambda x : 'Attrited Customer' if x == 1 else 'Existing Customer')
 
         # Download the CSV file with a download icon
         csv_data = uploaded_df.to_csv(index=False)
@@ -178,7 +246,11 @@ def main():
     )
 
     # Header image with centered alignment
-    st.markdown('<img src="https://github.com/Exwhybaba/Customer_Churn/raw/main/Customer-Churn.png" alt="Predict Customer Churn" style="width:100%;">', unsafe_allow_html=True)
+    st.image(r"C:\Users\Administrator\Documents\AIsat\Group_Project\Customer-Churn.png",
+             caption="Predict Customer Churn",
+             use_column_width=True,
+             )
+
     # Sidebar layout with rounded corners
     st.sidebar.markdown(
         '<style>div.Widget.row-widget.stRadio div[role="radiogroup"] > label {border-radius: 10px;}</style>',
@@ -192,7 +264,9 @@ def main():
     st.sidebar.markdown('- **Total Transaction Amount**: Enter the total transaction amount.')
     st.sidebar.markdown('- **Total Transaction Count**: Enter the total transaction count.')
     st.sidebar.markdown('- **Total Count Change Q4-Q1**: Enter the total count change from Q4 to Q1.')
-
+    st.sidebar.markdown('- **Dependent count**: Enter the Dependent count.')
+    st.sidebar.markdown("- **Inactive Months in the Past 12 Months**: Please input the number of months you've been inactive within the last 12 months.")
+    st.sidebar.markdown("- **Contacts Count in the Past 12 Months**: Enter the total number of contacts you've had in the last 12 months.")
     # Main content layout with rounded corners
     st.markdown(
         '<style>div.Widget.stButton button{border-radius: 10px;}</style>',
@@ -201,7 +275,6 @@ def main():
 
     col1, col2 = st.columns(2)
 
-    # First column
     with col1:
         # Use the global variables within this block
         total_relationship_count = st.number_input('Total Relationship Count',
@@ -219,8 +292,16 @@ def main():
                                          max_value=1.212,
                                          value=0.275,
                                          step=0.001)
+        Dependent_count = st.number_input('Dependent_count',
+                                              min_value=0,
+                                              max_value=5,
+                                              value=0)
 
-    # Second column
+        Months_Inactive_12_mon = st.number_input('Months Inactive 12 months',
+                                         min_value=0,
+                                         max_value=6,
+                                         value=0)
+
     with col2:
         # Use the global variables within this block
         total_trans_amt = st.number_input('Total Transaction Amount',
@@ -233,17 +314,23 @@ def main():
                                          max_value=113,
                                          value=10)
 
-        total_ct_chng_q4_q1 = st.number_input('Total Count Change Q4-Q1',
+        total_ct_chng_q4_q1 = st.slider('Total Count Change Q4-Q1',
                                              min_value=0.206,
                                              max_value=1.182,
-                                             value=0.206)
+                                             value=0.206,
+                                             step=0.001)
+
+        Contacts_Count_12_mon = st.number_input('Contacts Count 12 months',
+                                         min_value= 0,
+                                         max_value= 6,
+                                         value= 0)
 
     # Animated button for prediction with a success icon
     if st.button('Predict Customer Churn', key='prediction_button', help="Click to predict customer churn"):
         with st.spinner('Predicting ⏳...'):
             # Prediction logic
-            attrition = churn_prediction(total_relationship_count, total_revolving_bal, total_amt_chng_q4_q1,
-                                         total_trans_amt, total_trans_ct, total_ct_chng_q4_q1)
+            attrition = attrition = hybrid_prediction(total_trans_ct, Dependent_count, Months_Inactive_12_mon, Contacts_Count_12_mon,
+                               total_revolving_bal, total_relationship_count, total_trans_amt, total_amt_chng_q4_q1, total_ct_chng_q4_q1)
 
         # Display prediction result with custom styling and icon
         result_placeholder = st.empty()
@@ -268,6 +355,7 @@ if __name__ == '__main__':
         predict_many_individuals()
     else:
         main()
+
 
 
 
