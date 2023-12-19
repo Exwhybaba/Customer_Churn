@@ -237,16 +237,13 @@ def predict_many_individuals():
         st.write(f"The percentage of **attrited customers** is **{attrPerc}%**")
 
         # Plotting pie chart in Streamlit
-        fig, ax = plt.subplots(figsize=(4, 4))
+        fig, ax = plt.subplots(figsize=(3, 3))
         ax.pie(value_counts, labels=value_counts.index, autopct='%1.1f%%', startangle=140, colors=['#66b3ff', '#99ff99'])
         ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
 
         # Show the plot in Streamlit
         st.pyplot(fig)
         
-        st.write(f"The percentage of **existing customers** is **{exisPerc}%**")
-        st.write(f"The percentage of **attrited customers** is **{attrPerc}%**")
-
         # Download the CSV file with a download icon
         csv_data = uploaded_df.to_csv(index=False)
         st.download_button(
