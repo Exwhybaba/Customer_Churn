@@ -237,7 +237,7 @@ def predict_many_individuals():
         st.write(f"The percentage of **attrited customers** is **{attrPerc}%**")
 
         # Plotting pie chart in Streamlit
-        fig, ax = plt.subplots()
+        fig, ax = plt.subplots(figsize=(6, 6))
         ax.pie(value_counts, labels=value_counts.index, autopct='%1.1f%%', startangle=140, colors=['#66b3ff', '#99ff99'])
         ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
 
