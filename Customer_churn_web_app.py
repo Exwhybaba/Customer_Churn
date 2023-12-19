@@ -4,6 +4,9 @@ import io
 import pickle
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
+from docx import Document
+
 
 # GitHub raw content URL 
 raw_model_url = "https://raw.githubusercontent.com/Exwhybaba/Customer_Churn/main/model_and_transformers2.sav"
@@ -223,6 +226,23 @@ def predict_many_individuals():
                                                                row['Total_Trans_Amt'], row['Total_Amt_Chng_Q4_Q1'],
                                                                row['Total_Ct_Chng_Q4_Q1']), axis=1)
         uploaded_df['predicted_result'] = uploaded_df['predicted_result'].map(lambda x : 'Attrited Customer' if x == 1 else 'Existing Customer')
+        
+        value_counts = uploaded_df['predicted_result'].value_counts(normalize=True)
+        valueSum = sum(value_counts.values)
+        exisPerc = round(value_counts['Existing Customer']/ valueSum * 100, 1)
+        attrPerc = round(value_counts['Attrited Customer']/ valueSum * 100, 1)
+        st.write(f"The percentage of existing customers is {exisPerc}%")
+        st.write(f"The percentage of attrited customers is {attrPerc}%")
+
+
+        # Plotting pie chart in Streamlit
+        st.write("### Percentage Proportions of Predicted Results")
+        fig, ax = plt.subplots()
+        ax.pie(value_counts, labels=value_counts.index, autopct='%1.1f%%', startangle=140)
+        ax.set_title('Percentage Proportions of Predicted Results')
+
+        # Show the plot in Streamlit
+        st.pyplot(fig)
 
         # Download the CSV file with a download icon
         csv_data = uploaded_df.to_csv(index=False)
