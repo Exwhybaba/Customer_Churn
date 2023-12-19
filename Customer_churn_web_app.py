@@ -230,9 +230,7 @@ def predict_many_individuals():
         valueSum = sum(value_counts.values)
         exisPerc = round(value_counts['Existing Customer']/ valueSum * 100, 1)
         attrPerc = round(value_counts['Attrited Customer']/ valueSum * 100, 1)
-        st.write(f"The percentage of existing customers is {exisPerc}%")
-        st.write(f"The percentage of attrited customers is {attrPerc}%")
-
+        
         # Stylish text display
         st.markdown(f"### 📊 **Percentage Proportions of Predicted Results**")
         st.write(f"The percentage of **existing customers** is **{exisPerc}%**")
