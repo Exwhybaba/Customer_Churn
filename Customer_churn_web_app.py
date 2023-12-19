@@ -5,7 +5,6 @@ import pickle
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from docx import Document
 
 
 # GitHub raw content URL 
