@@ -1,16 +1,29 @@
 Table of Contents
+
 Project/ App Title
+
 Project description
+
 Data Sources
+
 Data Exploration
+
 Data Cleaning and Preprocessing
+
 Feature Engineering/Selection
+
 Modeling
+
 Training and Validation
+
 Result and Performances
+
 Model Deployment
+
 Requirements.txt
+
 Project/ App Title
+
 Customer Churn Prediction
 
 ## Project description
