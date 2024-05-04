@@ -1,30 +1,30 @@
-Table of Contents
+**Table of Contents**
 
-Project/ App Title
+**Project/ App Title**
 
-Project description
+**Project description**
 
-Data Sources
+**Data Sources**
 
-Data Exploration
+**Data Exploration**
 
-Data Cleaning and Preprocessing
+**Data Cleaning and Preprocessing**
 
-Feature Engineering/Selection
+**Feature Engineering/Selection**
 
-Modeling
+**Modeling**
 
-Training and Validation
+**Training and Validation**
 
-Result and Performances
+**Result and Performances**
 
-Model Deployment
+**Model Deployment**
 
-Requirements.txt
+**Requirements.txt**
 
-Project/ App Title
+**Project/ App Title**
 
-Customer Churn Prediction
+**Customer Churn Prediction**
 
 ## Project description
 Measuring growth is a crucial aspect for organizations to assess their performance and sustainability. These two dimensions: retaining existing customers and acquiring new ones—are fundamental to understanding the overall health and success of a business. Customer Retention (Existing Customers): Churn rate is a key metric to gauge how many customers are leaving over a specific period. A high churn rate might indicate issues with customer satisfaction, product/service quality, or market competition. Organizations should strive to keep their existing customers satisfied to ensure long-term success. Customer Acquisition (New Customers): Acquiring new customers is essential for expanding the customer base and increasing revenue. Monitoring metrics such as customer acquisition cost (CAC), conversion rates, and the effectiveness of marketing strategies helps organizations understand how efficiently they are bringing in new business.
