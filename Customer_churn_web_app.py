@@ -7,6 +7,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
+os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = "python"
+
 # GitHub raw content URL 
 raw_model_url = "https://raw.githubusercontent.com/Exwhybaba/Customer_Churn/main/model_and_transformers2.sav"
 
